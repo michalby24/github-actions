@@ -41,4 +41,4 @@ jobs:
     - name: Push to ACR
       run: |
         cd helm
-        docker push ${{ secrets.ACR_URL }}/helm-${{ github.event.repository.name }}/helm-chart:latest'
+        docker push ${{ secrets.ACR_URL }}/helm/${{ github.event.repository.name }}/helm-chart:latest'
