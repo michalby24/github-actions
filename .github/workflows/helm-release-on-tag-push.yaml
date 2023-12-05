@@ -12,33 +12,46 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.ACR_URL }}
+        username: ${{ secrets.ACR_PUSH_USER }}
+        password: ${{ secrets.ACR_PUSH_TOKEN }}
+
 
     - name: Set up Helm
       uses: azure/setup-helm@v1
       with:
         version: 'v3.6.3'
 
-    - name: Bump Helm Chart Version
-      run: |
-        cd helm
-        helm version
-        helm bump chart
-
-    - name: Package Helm Chart
-      run: |
-        cd helm
-        helm package .
-
-    - name: Upload to ACR
-      uses: Azure/docker-login@v1
+    - name: Run chart-releaser
+      uses: helm/chart-releaser-action@v1.6.0
       with:
-        login-server: ${{ secrets.ACR_URL }}
-        username: ${{ secrets.ACR_PUSH_USER }}
-        password: ${{ secrets.ACR_PUSH_TOKEN }}
+        charts_dir: charts
+        config: cr.yaml
+      env:
+        CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-    - name: Push to ACR
-      run: |
-        cd helm
-        docker push ${{ secrets.ACR_URL }}/helm/${{ github.event.repository.name }}/helm-chart:latest'
+    # - name: Bump Helm Chart Version
+    #   run: |
+    #     cd helm
+    #     helm version
+    #     helm bump chart
+
+    # - name: Package Helm Chart
+    #   run: |
+    #     cd helm
+    #     helm package .
+
+    # - name: Upload to ACR
+    #   uses: Azure/docker-login@v1
+    #   with:
+    #     login-server: ${{ secrets.ACR_URL }}
+    #     username: ${{ secrets.ACR_PUSH_USER }}
+    #     password: ${{ secrets.ACR_PUSH_TOKEN }}
+
+    # - name: Push to ACR
+    #   run: |
+    #     cd helm
+    #     docker push ${{ secrets.ACR_URL }}/helm/michal-test:latest'
