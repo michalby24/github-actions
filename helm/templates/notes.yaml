@@ -1,0 +1,3 @@
+
+
+#i needed to give the service account michal-postgres-crb system:openshift:scc:anyuid permissions

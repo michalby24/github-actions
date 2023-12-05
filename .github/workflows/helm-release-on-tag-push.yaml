@@ -10,7 +10,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -34,11 +34,11 @@ jobs:
     - name: Upload to ACR
       uses: Azure/docker-login@v1
       with:
-        login-server: 'AcrAroLibotNonProd.azurecr.io'
-        username: 
-        password: 
+        login-server: ${{ secrets.ACR_URL }}
+        username: ${{ secrets.ACR_PUSH_USER }}
+        password: ${{ secrets.ACR_PUSH_TOKEN }}
 
     - name: Push to ACR
       run: |
         cd helm
-        docker push 'AcrAroLibotNonProd.azurecr.io/helm-chart:latest'
+        docker push ${{ secrets.ACR_URL }}/helm-${{ github.event.repository.name }}/helm-chart:latest'

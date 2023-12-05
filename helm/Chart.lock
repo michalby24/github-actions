@@ -1,0 +1,12 @@
+dependencies:
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 23.3.0
+- name: postgresql
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 12.8.2
+- name: prometheus-postgres-exporter
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 4.8.0
+digest: sha256:193d234ca7b2146d8f6f55f467b747709fd70c2a2d766f378f06ad3849b11015
+generated: "2023-09-10T12:41:02.099173484+03:00"
