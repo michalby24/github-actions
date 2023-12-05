@@ -1,0 +1,44 @@
+name: Helm Chart Release
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'helm/**'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v1
+      with:
+        version: 'v3.6.3'
+
+    - name: Bump Helm Chart Version
+      run: |
+        cd helm
+        helm version
+        helm bump chart
+
+    - name: Package Helm Chart
+      run: |
+        cd helm
+        helm package .
+
+    - name: Upload to ACR
+      uses: Azure/docker-login@v1
+      with:
+        login-server: 'AcrAroLibotNonProd.azurecr.io'
+        username: 
+        password: 
+
+    - name: Push to ACR
+      run: |
+        cd helm
+        docker push 'AcrAroLibotNonProd.azurecr.io/helm-chart:latest'
