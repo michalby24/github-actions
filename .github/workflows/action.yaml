@@ -19,7 +19,7 @@ jobs:
       run: echo "Current working directory $(pwd)" 
 
     - name: print files
-      run: echo "$(ll -l)" | echo "$(ll -l ../)" 
+      run: echo "$(ls -l)" | echo "$(ls -l ../)" 
 
     - name: Set up Helm
       uses: azure/setup-helm@v1
