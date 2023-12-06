@@ -58,7 +58,6 @@ jobs:
 
       - name: Package Helm Chart
         run: |
-          cd helm
           CHART_NAME=${{ env.CHART_NAME }}
           VERSION=${{ steps.get_version.outputs.VERSION }}
           helm package --version $VERSION --app-version $VERSION --destination . $CHART_NAME
@@ -77,7 +76,6 @@ jobs:
 
       - name: Push to ACR
         run: |
-          cd helm
           HELM_PACKAGE_NAME=${{ env.HELM_PACKAGE_NAME }}
           docker tag $HELM_PACKAGE_NAME ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
           docker push ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
