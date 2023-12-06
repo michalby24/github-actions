@@ -53,13 +53,12 @@ jobs:
       - name: Get chart name
         id: get_chart_name
         run: |
-          CHART_NAME=$(yq eval '.name' Chart.yaml)
+          CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
           echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
 
       - name: Package Helm Chart
         run: |
           CHART_NAME=${{ env.CHART_NAME }}
-          VERSION=${{ steps.get_version.outputs.VERSION }}
           helm package --version $VERSION --app-version $VERSION --destination . $CHART_NAME
           echo "HELM_PACKAGE_NAME=${CHART_NAME}-${VERSION}.tgz" >> $GITHUB_ENV
 
