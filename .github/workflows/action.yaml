@@ -25,7 +25,7 @@ jobs:
         cd helm
         # Assuming your version is a semantic version (e.g., 1.2.3)
         CURRENT_VERSION=$(grep 'version:' Chart.yaml | awk '{print $2}')
-        NEW_VERSION=$(./your_version_bumping_script $CURRENT_VERSION)  # Implement your version bumping logic here
+        NEW_VERSION=$(./bump_version.sh $CURRENT_VERSION)  # Implement your version bumping logic here
         sed -i "s/version: $CURRENT_VERSION/version: $NEW_VERSION/" Chart.yaml
 
     - name: Package Helm Chart
