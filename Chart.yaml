@@ -1,17 +1,6 @@
 apiVersion: v2
-name: michal-test-chart
-description: A Helm chart for Kubernetes
+name: demo-helm-semver-release
+description: Demo repo for using semantic-release with helm
+type: application
 version: 1.0.0
-dependencies:
-  - name: prometheus
-    version: 23.3.0
-    repository: https://prometheus-community.github.io/helm-charts
-    condition: prometheus.enabled
-  - name: postgresql
-    version: 12.8.2
-    repository: oci://registry-1.docker.io/bitnamicharts
-    condition: postgresql.enabled
-  - name: prometheus-postgres-exporter
-    version: 4.8.0
-    repository: https://prometheus-community.github.io/helm-charts
-    condition: prometheus-postgres-exporter.enabled
+appVersion: 1.0.0
