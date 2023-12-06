@@ -49,16 +49,15 @@ jobs:
         run: |
           cd helm
           helm package .
-  
+
       - name: Log into Azure Container Registry
         uses: azure/docker-login@v1
         with:
           login-server: '${{ secrets.ACR_URL }}'
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
-  
+          username: '${{ secrets.ACR_USERNAME }}'
+          password: '${{ secrets.ACR_PASSWORD }}'
+
       - name: Push to ACR
         run: |
           cd helm
           docker push '${{ secrets.ACR_URL }}/helm/michal:latest'
-  
