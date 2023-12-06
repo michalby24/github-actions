@@ -44,11 +44,16 @@ jobs:
         with:
           commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
           file_pattern: 'Chart.yaml'
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 'v3.6.3'
       
       - name: Package Helm Chart
         run: |
           cd helm
-          helm package .
+          helm package . --version ${{ steps.get_version.outputs.VERSION }} .
 
       - uses: azure/docker-login@v1
         with:
