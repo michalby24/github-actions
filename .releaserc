@@ -1,0 +1,12 @@
+{
+  "name": "demo-helm-semver-release",
+  "branches": ["master"],
+  "plugins": [
+    [
+      "semantic-release-helm",
+      {
+        chartPath: './helm/',
+      }
+    ]
+  ]
+}
