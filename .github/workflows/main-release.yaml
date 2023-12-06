@@ -64,7 +64,6 @@ jobs:
 
       - name: Package Helm Chart
         run: |
-          cd helm
           helm package . --version ${{ steps.get_version.outputs.VERSION }} .
 
       - uses: azure/docker-login@v1
