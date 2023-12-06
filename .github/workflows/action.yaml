@@ -20,6 +20,14 @@ jobs:
       with:
         version: 'v3.6.3'
 
+    - name: Bump a Helm Chart Version Locally
+      uses: explorium-ai/bump-helm-chart-action@main
+      with:
+        chart-path: charts/mychart
+        app_version: true
+        level: patch
+
+
     - name: Update Helm Chart Version
       run: |
         cd helm
