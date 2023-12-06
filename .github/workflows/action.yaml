@@ -1,9 +1,11 @@
-name: Helm Release
+name: Helm Chart Release
 
 on:
   push:
     branches:
       - master
+    paths:
+      - 'helm/**'
 
 jobs:
   release:
@@ -20,35 +22,25 @@ jobs:
 
     - name: Update Helm Chart Version
       run: |
-        sed -i 's/version: .*/version: 1.2.3/' helm/Chart.yaml
-        cat helm/Chart.yaml
+        cd helm
+        # Assuming your version is a semantic version (e.g., 1.2.3)
+        CURRENT_VERSION=$(grep 'version:' Chart.yaml | awk '{print $2}')
+        NEW_VERSION=$(./your_version_bumping_script $CURRENT_VERSION)  # Implement your version bumping logic here
+        sed -i "s/version: $CURRENT_VERSION/version: $NEW_VERSION/" Chart.yaml
 
     - name: Package Helm Chart
       run: |
-        helm package helm
-        ls -l
+        cd helm
+        helm package .
 
-    - name: Set up Azure CLI
-      uses: azure/login@v1
+    - name: Log into Azure Container Registry
+      uses: azure/docker-login@v1
       with:
-        login-server: ${{ secrets.ACR_URL }}
-        username: ${{ secrets.ACR_PUSH_USER }}
-        password: ${{ secrets.ACR_PUSH_TOKEN }}
+        login-server: '${{ secrets.ACR_URL }}'
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
-    - name: Set ACR Repository
+    - name: Push to ACR
       run: |
-        ACR_REPO="${{ secrets.ACR_URL }}.azurecr.io/helm/michal"
-        echo "::set-output name=acr_repo::$ACR_REPO"
-
-    - name: Docker Login to ACR
-      run: |
-        az acr login --name <your-acr-name>
-
-    - name: Tag and Push Helm Chart to ACR
-      run: |
-        docker build -t ${{ steps.release.outputs.acr_repo }}:latest .
-        docker push ${{ steps.release.outputs.acr_repo }}:latest
-
-    - name: Deploy Helm Release
-      run: |
-        helm install my-release ${{ steps.release.outputs.acr_repo }}:latest
+        cd helm
+        docker push '${{ secrets.ACR_URL }}/helm/michal:latest'
