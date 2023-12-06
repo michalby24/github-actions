@@ -36,7 +36,7 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          echo "VERSION=$(./yq -r Chart.yaml version)"
+          echo "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
 
       - name: Commit Chart.yaml
         uses: stefanzweifel/git-auto-commit-action@v4
