@@ -50,6 +50,20 @@ jobs:
         with:
           version: 'v3.6.3'
       
+      - name: Get chart name
+        id: get_chart_name
+        run: |
+          CHART_NAME=$(yq eval '.name' Chart.yaml)
+          echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
+
+      - name: Package Helm Chart
+        run: |
+          cd helm
+          CHART_NAME=${{ env.CHART_NAME }}
+          VERSION=${{ steps.get_version.outputs.VERSION }}
+          helm package --version $VERSION --app-version $VERSION --destination . $CHART_NAME
+          echo "HELM_PACKAGE_NAME=${CHART_NAME}-${VERSION}.tgz" >> $GITHUB_ENV
+
       - name: Package Helm Chart
         run: |
           cd helm
@@ -64,4 +78,8 @@ jobs:
       - name: Push to ACR
         run: |
           cd helm
-          docker push '${{ secrets.ACR_URL }}/helm/michal:latest'
+          HELM_PACKAGE_NAME=${{ env.HELM_PACKAGE_NAME }}
+          docker tag $HELM_PACKAGE_NAME ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
+          docker push ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
+
+
