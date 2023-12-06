@@ -64,4 +64,4 @@ prometheus-postgres-exporter:
       user: testuser
       password: testpass
       database: postgres
-    logLevel: debu
+    logLevel: debug
