@@ -45,52 +45,52 @@ jobs:
         with:
           version: 'v3.6.3'
       
- #     - name: Get chart name
- #       id: get_chart_name
- #       run: |
- #         CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
- #         echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
+#       - name: Get chart name
+#         id: get_chart_name
+#         run: |
+#           CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
+#           echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
 
-      - name: Helm Chart Save
-        run: |
-#          cd .\helm
-          helm chart save . ${{ env.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-          helm chart save . ${{ secrets.ACR_URL }}/helm/${{ secrets.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-          # list out saved charts
-          helm chart list
-        env:
-          HELM_EXPERIMENTAL_OCI: 1
+#       - name: Helm Chart Save
+#         run: |
+# #          cd .\helm
+#           helm chart save . ${{ env.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
+#           helm chart save . ${{ secrets.ACR_URL }}/helm/${{ secrets.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
+#           # list out saved charts
+#           helm chart list
+#         env:
+#           HELM_EXPERIMENTAL_OCI: 1
 
-      - name: Helm Chart Push
-        run: |
-          helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
-          helm chart push ${{ secrets.ACR_URL }}/helm/${{ secrets.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-        env:
-          HELM_EXPERIMENTAL_OCI: 1
+#       - name: Helm Chart Push
+#         run: |
+#           helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
+#           helm chart push ${{ secrets.ACR_URL }}/helm/${{ secrets.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
+#         env:
+#           HELM_EXPERIMENTAL_OCI: 1
 
 
 
-#        - name: Package Helm Chart
-#        run: |
-#          CHART_NAME=${{ env.CHART_NAME }}
-#          helm package --version $VERSION --app-version $VERSION --destination . $CHART_NAME
-#          echo "HELM_PACKAGE_NAME=${CHART_NAME}-${VERSION}.tgz" >> $GITHUB_ENV
+# #        - name: Package Helm Chart
+# #        run: |
+# #          CHART_NAME=${{ env.CHART_NAME }}
+# #          helm package --version $VERSION --app-version $VERSION --destination . $CHART_NAME
+# #          echo "HELM_PACKAGE_NAME=${CHART_NAME}-${VERSION}.tgz" >> $GITHUB_ENV
 
-      # - name: Package Helm Chart
-      #   run: |
-      #     helm package . ${{ env.CHART_NAME }} 
-      #   #--version ${{ steps.get_version.outputs.VERSION }} .
+#       # - name: Package Helm Chart
+#       #   run: |
+#       #     helm package . ${{ env.CHART_NAME }} 
+#       #   #--version ${{ steps.get_version.outputs.VERSION }} .
 
-      # - uses: azure/docker-login@v1
-      #   with:
-      #     login-server: ${{ secrets.ACR_URL }}
-      #     username: ${{ secrets.ACR_PUSH_USER }}
-      #     password: ${{ secrets.ACR_PUSH_TOKEN }}
+#       # - uses: azure/docker-login@v1
+#       #   with:
+#       #     login-server: ${{ secrets.ACR_URL }}
+#       #     username: ${{ secrets.ACR_PUSH_USER }}
+#       #     password: ${{ secrets.ACR_PUSH_TOKEN }}
 
-      # - name: Push to ACR
-      #   run: |
-      #     HELM_PACKAGE_NAME=${{ env.HELM_PACKAGE_NAME }}
-      #     docker tag $HELM_PACKAGE_NAME ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
-      #     docker push ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
+#       # - name: Push to ACR
+#       #   run: |
+#       #     HELM_PACKAGE_NAME=${{ env.HELM_PACKAGE_NAME }}
+#       #     docker tag $HELM_PACKAGE_NAME ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
+#       #     docker push ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
 
 
