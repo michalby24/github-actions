@@ -45,11 +45,11 @@ jobs:
         with:
           version: 'v3.6.3'
       
-      - name: Get chart name
-        id: get_chart_name
-        run: |
-          CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
-          echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
+ #     - name: Get chart name
+ #       id: get_chart_name
+ #       run: |
+ #         CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
+ #         echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
 
       - name: Helm Chart Save
         run: |
