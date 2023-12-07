@@ -55,6 +55,44 @@ jobs:
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
+  build-and-push-helm-chart:
+    name: Build and Push Helm Chart
+    runs-on: windows-latest
+    needs: [build-and-publish-docker-image]
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Get chart name
+      id: get_chart_name
+      run: |
+        cd .\helm        
+        CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
+        echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
+
+
+    - name: Helm Repo Add
+      run: |
+        helm repo add ${{ secrets.ACR_URL }} https://${{ secrets.ACR_URL }}/helm/michal --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
+      env:
+        HELM_EXPERIMENTAL_OCI: 1
+
+    - name: Helm Chart Save
+      run: |
+        cd .\helm
+        helm chart save . ${{ steps.get_chart_name.outputs.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
+        helm chart save . ${{ secrets.ACR_URL }}/helm/${{ secrets.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
+        # list out saved charts
+        helm chart list
+      env:
+        HELM_EXPERIMENTAL_OCI: 1
+
+    - name: Helm Chart Push
+      run: |
+        helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
+        helm chart push ${{ secrets.ACR_URL }}/helm/${{ steps.get_chart_name.outputs.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
+      env:
+        HELM_EXPERIMENTAL_OCI: 1
+
 
 #       - name: Get chart name
 #         id: get_chart_name
