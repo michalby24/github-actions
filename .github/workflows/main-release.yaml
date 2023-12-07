@@ -51,12 +51,6 @@ jobs:
           CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
           echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
 
- #     - name: Helm Repo Add
- #       run: |
- #         helm repo add ${{ secrets.ACR_URL }} https://${{ secrets.ACR_URL }}/helm/michal --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
- #       env:
- #         HELM_EXPERIMENTAL_OCI: 1
-#
       - name: Helm Chart Save
         run: |
 #          cd .\helm
