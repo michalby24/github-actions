@@ -74,11 +74,11 @@ jobs:
 
       - name: save helm chart to local registry
         run: |
-          helm chart save . ${{ secrets.ACR_URL }}/helm/$CHART_NAME:'latest'
+          helm chart save . ${{ secrets.ACR_URL }}/helm/$CHART_NAME:latest
 
       - name: publish chart to acr
         run: |
-          helm chart push ${{ secrets.ACR_URL }}/$CHART_NAME:'latest'
+          helm chart push ${{ secrets.ACR_URL }}/$CHART_NAME:latest
 
 
 
