@@ -19,11 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout repo
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          path: 'helm'
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -31,6 +26,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: 'helm'
 
       - name: Release
         env:
