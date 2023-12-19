@@ -76,6 +76,10 @@ jobs:
         run: |
           helm chart save . ${{ secrets.ACR_URL }}/helm/$CHART_NAME:"$VERSION"
             
+      - name: Get image
+        run: |
+          helm list
+
       - name: publish chart to acr
         run: |
           helm chart push ${{ secrets.ACR_URL }}/$CHART_NAME:"$VERSION"
