@@ -78,7 +78,7 @@ jobs:
 
       - name: publish chart to acr
         run: |
-          helm chart push ${{ secrets.ACR_URL }}/$CHART_NAME:
+          helm chart push ${{ secrets.ACR_URL }}/$CHART_NAME:'latest'
 
 
 
