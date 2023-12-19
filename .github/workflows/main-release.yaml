@@ -6,7 +6,6 @@ on:
       - master
 env:
   HELM_EXPERIMENTAL_OCI: 1
-  HELM_VERSION_TO_INSTALL: 3.5.0
   ACR_NAME: acrdemoutkarsh
   ACR_REPO_NAME: helm/michsi-app
 
@@ -59,7 +58,7 @@ jobs:
       - name: install helm
         uses: Azure/setup-helm@v1
         with:
-          version: ${{ env.HELM_VERSION_TO_INSTALL }}# default is latest
+          version: 'v3.6.3'
 
       - name: login to acr using helm
         run: |
