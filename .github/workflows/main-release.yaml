@@ -68,7 +68,7 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}'))"
+          export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}')"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: save helm chart to local registry
