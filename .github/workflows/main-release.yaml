@@ -68,6 +68,10 @@ jobs:
         run: |
           dir
 
+      - name: show path
+        run: |
+          pwd 
+
       # - name: save helm chart to local registry
       #   run: |
       #     helm chart save /src/azure-vote-helm-chart/ ${{ secrets.ACR_URL }}/$ACR_REPO_NAME:latest
