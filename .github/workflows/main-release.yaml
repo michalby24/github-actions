@@ -47,11 +47,11 @@ jobs:
           commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
           file_pattern: 'Chart.yaml'
 
-  build:
-    name: publish acr
-    runs-on: ubuntu-latest
-    environment: prod
-    steps:
+  # build:
+  #   name: publish acr
+  #   runs-on: ubuntu-latest
+  #   environment: prod
+  #   steps:
       - uses: actions/checkout@v2
         name: checkout repo
       
