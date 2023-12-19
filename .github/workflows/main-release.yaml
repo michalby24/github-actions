@@ -65,7 +65,6 @@ jobs:
           echo $ | helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
 
       - name: Get version
-        id: get_version
         run: |
           export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
