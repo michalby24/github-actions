@@ -67,9 +67,7 @@ jobs:
 
       - name: Get version
         id: get_version
-        run: |
-          export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+        run: echo "VERSION=${{ needs.semantic-release.outputs.version }}" >> $GITHUB_ENV
 
       - name: save helm chart to local registry
         run: |
