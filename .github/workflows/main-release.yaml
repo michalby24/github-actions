@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+env:
+  HELM_EXPERIMENTAL_OCI: 1
+  ACR_NAME: acrdemoutkarsh
+  ACR_REPO_NAME: helm/michsi-app
+
 
 permissions:
   contents: write
@@ -41,138 +46,41 @@ jobs:
         with:
           commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
           file_pattern: 'Chart.yaml'
-###########################################################
-  # release:
-  #   # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
-  #   # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
 
-  #     - name: Configure Git
-  #       run: |
-  #         git config user.name "$GITHUB_ACTOR"
-  #         git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+  build:
+    name: publish acr
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: semantic-release
+    steps:
+      - uses: actions/checkout@v2
+        name: checkout repo
+      
+      - name: install helm
+        uses: Azure/setup-helm@v1
+        with:
+          version: 'v3.6.3'
 
-  #     - name: Install Helm
-  #       uses: azure/setup-helm@v3
+      - name: login to acr using helm
+        run: |
+          echo $ | helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
 
-  #     - name: Run chart-releaser
-  #       uses: helm/chart-releaser-action@v1.6.0
-  #       env:
-  #         CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-  
+      - name: Get version
+        id: get_version
+        run: |
+          export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}')"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
+      - name: Get Chart name
+        id: get_chart
+        run: |
+          export "CHART=$(cat Chart.yaml | grep name | awk '{print $2}')"
+          echo "CHART=$CHART" >> $GITHUB_ENV
 
-
-
-
-
-
-
-# 
-      # - name: Set up Helm
-        # uses: azure/setup-helm@v1
-        # with:
-          # version: 'v3.6.3'
-# 
-      # - name: Install Helm
-        # uses: azure/setup-helm@v3
-# 
-      # - name: Run chart-releaser
-        # uses: helm/chart-releaser-action@v1.6.0
-        # env:
-          # CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-# 
-  # build-and-push-helm-chart:
-    # name: Build and Push Helm Chart
-    # runs-on: windows-latest
-    # steps:
-    # - uses: actions/checkout@master
-# 
-    # - name: Get chart name
-      # id: get_chart_name
-      # run: |
-        # cd .\helm        
-        # CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
-        # echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
-# 
-# 
-    # - name: Helm Repo Add
-      # run: |
-        # helm repo add ${{ secrets.ACR_URL }} https://${{ secrets.ACR_URL }}/helm/michal --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
-      # env:
-        # HELM_EXPERIMENTAL_OCI: 1
-# 
-    # - name: Helm Chart Save
-      # run: |
-        # cd .\helm
-        # helm chart save . ${{ steps.get_chart_name.outputs.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-        # helm chart save . ${{ secrets.ACR_URL }}/helm/${{ secrets.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-  #      list out saved charts
-        # helm chart list
-      # env:
-        # HELM_EXPERIMENTAL_OCI: 1
-# 
-    # - name: Helm Chart Push
-      # run: |
-        # helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
-        # helm chart push ${{ secrets.ACR_URL }}/helm/${{ steps.get_chart_name.outputs.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-      # env:
-        # HELM_EXPERIMENTAL_OCI: 1
-# 
-# 
- #     - name: Get chart name
-   #     id: get_chart_name
-#         run: |
-#           CHART_NAME=$(cat Chart.yaml | grep name | awk '{print $2}')
-#           echo "CHART_NAME=$CHART_NAME" >> $GITHUB_ENV
-
-#       - name: Helm Chart Save
-#         run: |
-# #          cd .\helm
-#           helm chart save . ${{ env.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-#           helm chart save . ${{ secrets.ACR_URL }}/helm/${{ secrets.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-#           # list out saved charts
-#           helm chart list
-#         env:
-#           HELM_EXPERIMENTAL_OCI: 1
-
-#       - name: Helm Chart Push
-#         run: |
-#           helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }}
-#           helm chart push ${{ secrets.ACR_URL }}/helm/${{ secrets.CHART_NAME }}:v${{ steps.get_version.outputs.VERSION }}
-#         env:
-#           HELM_EXPERIMENTAL_OCI: 1
-
-
-
-# #        - name: Package Helm Chart
-# #        run: |
-# #          CHART_NAME=${{ env.CHART_NAME }}
-# #          helm package --version $VERSION --app-version $VERSION --destination . $CHART_NAME
-# #          echo "HELM_PACKAGE_NAME=${CHART_NAME}-${VERSION}.tgz" >> $GITHUB_ENV
-
-#       # - name: Package Helm Chart
-#       #   run: |
-#       #     helm package . ${{ env.CHART_NAME }} 
-#       #   #--version ${{ steps.get_version.outputs.VERSION }} .
-
-#       # - uses: azure/docker-login@v1
-#       #   with:
-#       #     login-server: ${{ secrets.ACR_URL }}
-#       #     username: ${{ secrets.ACR_PUSH_USER }}
-#       #     password: ${{ secrets.ACR_PUSH_TOKEN }}
-
-#       # - name: Push to ACR
-#       #   run: |
-#       #     HELM_PACKAGE_NAME=${{ env.HELM_PACKAGE_NAME }}
-#       #     docker tag $HELM_PACKAGE_NAME ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
-#       #     docker push ${{ secrets.ACR_URL }}/helm/michal:$HELM_PACKAGE_NAME
-
-
+      - name: save helm chart to local registry
+        run: |
+          helm chart save . ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
+            
+      - name: publish chart to acr
+        run: |
+          helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
