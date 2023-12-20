@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+env:
+  HELM_EXPERIMENTAL_OCI: 1
+
+
 
 permissions:
   contents: write
