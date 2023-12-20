@@ -71,7 +71,7 @@ jobs:
     name: publish acr
     runs-on: ubuntu-latest
     environment: prod
-    needs: semantic-release
+    #needs: semantic-release
     if: ${{ needs.detect-changes.outputs.any_changed == 'true' }}
     steps:
       - uses: actions/checkout@v2
