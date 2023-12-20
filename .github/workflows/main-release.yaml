@@ -38,7 +38,7 @@ jobs:
   semantic-release:
     runs-on: ubuntu-latest
     needs: detect-changes
-    if: needs.a.outputs.run_job_b == 'yes'
+    if: needs.detect-changes.outputs.run_job_b == 'yes'
     steps:
       # Checkout repo
       - name: Checkout
