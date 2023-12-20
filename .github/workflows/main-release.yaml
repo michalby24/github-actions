@@ -77,7 +77,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: checkout repo
-      
+
+      - name: Change to Helm directory
+        working-directory: ./helm
+        run: cd ./helm
+
       - name: install helm
         uses: Azure/setup-helm@v1
         with:
