@@ -31,74 +31,78 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           echo "One or more files in the docs folder has changed."
+          echo "result=true" >> $GITHUB_ENV
 
 
-  # semantic-release:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Checkout repo
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  semantic-release:
+    runs-on: ubuntu-latest
+    needs: semantic-release
+    if: ${{ needs.detect-changes.outputs.result == 'true' }}
+    steps:
+      # Checkout repo
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 'lts/*'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
 
-  #     - name: Install dependencies
-  #       run: npm install
+      - name: Install dependencies
+        run: npm install
 
-  #     - name: Release
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       run: npx semantic-release
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
 
-  #     - name: Get version
-  #       id: get_version
-  #       run: |
-  #         echo "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
-  #         echo "$VERSION" >> $GITHUB_OUTPUT
+      - name: Get version
+        id: get_version
+        run: |
+          echo "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
+          echo "$VERSION" >> $GITHUB_OUTPUT
 
-  #     - name: Commit Chart.yaml
-  #       uses: stefanzweifel/git-auto-commit-action@v4
-  #       with:
-  #         commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
-  #         file_pattern: 'Chart.yaml'
+      - name: Commit Chart.yaml
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
+          file_pattern: 'Chart.yaml'
 
-  # build:
-    # name: publish acr
-    # runs-on: ubuntu-latest
-    # environment: prod
-    # needs: semantic-release
-    # steps:
-    #   - uses: actions/checkout@v2
-    #     name: checkout repo
+  build:
+    name: publish acr
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: semantic-release
+    if: ${{ needs.detect-changes.outputs.result == 'true' }}
+    steps:
+      - uses: actions/checkout@v2
+        name: checkout repo
       
-    #   - name: install helm
-    #     uses: Azure/setup-helm@v1
-    #     with:
-    #       version: 'v3.6.3'
+      - name: install helm
+        uses: Azure/setup-helm@v1
+        with:
+          version: 'v3.6.3'
 
-    #   - name: login to acr using helm
-    #     run: |
-    #       echo $ | helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
+      - name: login to acr using helm
+        run: |
+          echo $ | helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
 
-    #   - name: Get version
-    #     id: get_version
-    #     run: |
-    #       export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}')"
-    #       echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Get version
+        id: get_version
+        run: |
+          export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}')"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-    #   - name: Get Chart name
-    #     id: get_chart
-    #     run: |
-    #       export "CHART=$(cat Chart.yaml | grep name | awk '{print $2}')"
-    #       echo "CHART=$CHART" >> $GITHUB_ENV
+      - name: Get Chart name
+        id: get_chart
+        run: |
+          export "CHART=$(cat Chart.yaml | grep name | awk '{print $2}')"
+          echo "CHART=$CHART" >> $GITHUB_ENV
 
-    #   - name: save helm chart to local registry
-    #     run: |
-    #       helm chart save . ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
+      - name: save helm chart to local registry
+        run: |
+          helm chart save . ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
             
-    #   - name: publish chart to acr
-    #     run: |
-    #       helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
+      - name: publish chart to acr
+        run: |
+          helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
