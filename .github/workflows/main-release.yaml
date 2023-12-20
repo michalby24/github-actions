@@ -32,7 +32,7 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           echo "::set-output name=run_job_b::yes"
-        outputs:
+    outputs:
           run_job_b: ${{ steps.set.outputs.run_job_b }}
 
   semantic-release:
