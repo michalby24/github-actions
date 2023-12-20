@@ -43,6 +43,8 @@ jobs:
       # Checkout repo
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          path: 'helm' 
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -77,10 +79,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: checkout repo
-
-      - name: Change to Helm directory
-        working-directory: ./helm
-        run: cd ./helm
+        with:
+          path: 'helm'
 
       - name: install helm
         uses: Azure/setup-helm@v1
