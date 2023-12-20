@@ -14,39 +14,58 @@ permissions:
   pull-requests: write
 
 jobs:
-  semantic-release:
+  detect-changes:
     runs-on: ubuntu-latest
     steps:
-      # Checkout repo
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
         with:
-          node-version: 'lts/*'
+          fetch-depth: 0
 
-      - name: Install dependencies
-        run: npm install
+      - name: Get changed files in the Helm Folder
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v40
+        with:
+          files: helm/**  # Alternatively using: `docs/**`
 
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
-
-      - name: Get version
-        id: get_version
+      - name: Run step if any file(s) in the helm folder change
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          echo "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
-          echo "$VERSION" >> $GITHUB_OUTPUT
+          echo "One or more files in the docs folder has changed."
 
-      - name: Commit Chart.yaml
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
-          file_pattern: 'Chart.yaml'
 
-  build:
+  # semantic-release:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Checkout repo
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 'lts/*'
+
+  #     - name: Install dependencies
+  #       run: npm install
+
+  #     - name: Release
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       run: npx semantic-release
+
+  #     - name: Get version
+  #       id: get_version
+  #       run: |
+  #         echo "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
+  #         echo "$VERSION" >> $GITHUB_OUTPUT
+
+  #     - name: Commit Chart.yaml
+  #       uses: stefanzweifel/git-auto-commit-action@v4
+  #       with:
+  #         commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
+  #         file_pattern: 'Chart.yaml'
+
+  # build:
     name: publish acr
     runs-on: ubuntu-latest
     environment: prod
