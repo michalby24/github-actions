@@ -79,8 +79,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: checkout repo
-        #with:
-         # path: 'helm'
+        with:
+          path: 'helm'
 
       - name: install helm
         uses: Azure/setup-helm@v1
