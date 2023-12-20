@@ -28,15 +28,17 @@ jobs:
           files: helm/**  # Alternatively using: `docs/**`
 
       - name: Run step if any file(s) in the helm folder change
+        id: set
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          echo "One or more files in the docs folder has changed."
-
+          echo "::set-output name=run_job_b::yes"
+        outputs:
+          run_job_b: ${{ steps.set.outputs.run_job_b }}
 
   semantic-release:
     runs-on: ubuntu-latest
     needs: detect-changes
-    if: ${{ needs.detect-changes.steps.changed-files-specific.outputs.any_changed == 'true'}}
+    if: needs.a.outputs.run_job_b == 'yes'
     steps:
       # Checkout repo
       - name: Checkout
@@ -71,8 +73,7 @@ jobs:
     name: publish acr
     runs-on: ubuntu-latest
     environment: prod
-    #needs: semantic-release
-    if: ${{ needs.detect-changes.outputs.any_changed == 'true' }}
+    needs: semantic-release
     steps:
       - uses: actions/checkout@v2
         name: checkout repo
