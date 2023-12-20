@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - master
-env:
-  HELM_EXPERIMENTAL_OCI: 1
-  ACR_NAME: acrdemoutkarsh
-  ACR_REPO_NAME: helm/michsi-app
-
 
 permissions:
   contents: write
