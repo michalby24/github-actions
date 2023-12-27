@@ -97,7 +97,7 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          VERSION=$(awk '/version/{print $2}' Chart.yaml)
+          VERSION=$(awk '/version/{print $2; exit}' Chart.yaml)
           NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. '{ $NF++; print }')
           echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
         working-directory: ./helm
@@ -105,7 +105,7 @@ jobs:
       - name: Get Chart name
         id: get_chart
         run: |
-          export "CHART=$(cat Chart.yaml | grep name | awk '{print $2}')"
+          export "CHART=$(cat Chart.yaml | grep name | awk '{print $2; exit}')"
           echo "CHART=$CHART" >> $GITHUB_ENV
         working-directory: ./helm
 
