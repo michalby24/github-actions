@@ -68,6 +68,7 @@ jobs:
         run: |
           echo "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
           echo "$VERSION" >> $GITHUB_OUTPUT
+        working-directory: ./helm
 
       - name: Commit Chart.yaml
         uses: stefanzweifel/git-auto-commit-action@v4
