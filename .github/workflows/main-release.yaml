@@ -41,8 +41,6 @@ jobs:
       # Checkout repo
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-         path: 'helm' 
 
       - name: list content
         run: |
