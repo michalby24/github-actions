@@ -99,8 +99,9 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}')"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          VERSION=$(awk '/version/{print $2}' helm/Chart.yaml)
+          NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. '{ $NF++; print }')
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
         working-directory: ./helm
 
       - name: Get Chart name
