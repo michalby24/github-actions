@@ -103,18 +103,22 @@ jobs:
         run: |
           export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}')"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+        working-directory: ./helm
 
       - name: Get Chart name
         id: get_chart
         run: |
           export "CHART=$(cat Chart.yaml | grep name | awk '{print $2}')"
           echo "CHART=$CHART" >> $GITHUB_ENV
+        working-directory: ./helm
 
       - name: save helm chart to local registry
         run: |
           helm chart save . '${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}'
+        working-directory: ./helm
       
       - name: publish chart to acr
         run: |
           helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
+        working-directory: ./helm
 
