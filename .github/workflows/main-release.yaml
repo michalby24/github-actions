@@ -42,13 +42,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: list content
-        run: |
-          pwd
-          dir
-          cd helm
-          pwd
-          dir
+
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -86,6 +80,14 @@ jobs:
         name: checkout repo
         with:
           path: './helm'
+
+      - name: list content
+        run: |
+          pwd
+          dir
+          cd helm
+          pwd
+          dir
 
       - name: install helm
         uses: Azure/setup-helm@v1
