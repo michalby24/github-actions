@@ -44,6 +44,11 @@ jobs:
         with:
          path: 'helm' 
 
+      - name: list content
+        run: |
+          pwd
+          dir
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
