@@ -66,7 +66,7 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          echo "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}')"
+          echo "VERSION=$(awk '/version/{print $2; exit}' Chart.yaml)"
           echo "$VERSION" >> $GITHUB_OUTPUT
         working-directory: ./helm
 
@@ -75,6 +75,7 @@ jobs:
         with:
           commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
           file_pattern: 'Chart.yaml'
+        working-directory: ./helm
 
   # build:
   #   name: publish acr
