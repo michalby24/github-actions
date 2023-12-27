@@ -1,0 +1,12 @@
+{
+  "name": "michal-test-chart",
+  "branches": ["master"],
+  "plugins": [
+    [
+      "semantic-release-helm",
+      {
+        "chartPath": "./helm"
+      }
+    ]
+  ]
+}
