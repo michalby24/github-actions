@@ -48,6 +48,9 @@ jobs:
         run: |
           pwd
           dir
+          cd helm
+          pwd
+          dir
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
