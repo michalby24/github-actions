@@ -12,31 +12,31 @@ permissions:
   pull-requests: write
 
 jobs:
-  # detect-changes:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 2
+  detect-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-  #     - name: Get changed files in the Helm Folder
-  #       id: changed-files-specific
-  #       uses: tj-actions/changed-files@v40
-  #       with:
-  #         files: helm/**  # Alternatively using: `docs/**`
+      - name: Get changed files in the Helm Folder
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v40
+        with:
+          files: helm/**  # Alternatively using: `docs/**`
 
-  #     - name: Run step if any file(s) in the helm folder change
-  #       id: set
-  #       if: steps.changed-files-specific.outputs.any_changed == 'true'
-  #       run: |
-  #         echo "::set-output name=run_job_b::yes"
-  #   outputs:
-  #         run_job_b: ${{ steps.set.outputs.run_job_b }}
+      - name: Run step if any file(s) in the helm folder change
+        id: set
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          echo "::set-output name=run_job_b::yes"
+    outputs:
+          run_job_b: ${{ steps.set.outputs.run_job_b }}
 
   semantic-release:
     runs-on: ubuntu-latest
-    # needs: detect-changes
-    # if: needs.detect-changes.outputs.run_job_b == 'yes'
+    needs: detect-changes
+    if: needs.detect-changes.outputs.run_job_b == 'yes'
     steps:
       # Checkout repo
       - name: Checkout
@@ -76,44 +76,43 @@ jobs:
           commit_message: 'chore(release) bump version to ${{ steps.get_version.outputs.VERSION }}'
           file_pattern: './helm/Chart.yaml'
 
+  build:
+    name: publish acr
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: semantic-release
+    steps:
+      - uses: actions/checkout@v2
+        name: checkout repo
+        with:
+          path: './helm'
 
-  # build:
-  #   name: publish acr
-  #   runs-on: ubuntu-latest
-  #   environment: prod
-  #   needs: semantic-release
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       name: checkout repo
-  #       with:
-  #         path: './helm'
+      - name: install helm
+        uses: Azure/setup-helm@v1
+        with:
+          version: 'v3.6.3'
 
-  #     - name: install helm
-  #       uses: Azure/setup-helm@v1
-  #       with:
-  #         version: 'v3.6.3'
+      - name: login to acr using helm
+        run: |
+          echo $ | helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
 
-  #     - name: login to acr using helm
-  #       run: |
-  #         echo $ | helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
+      - name: Get version
+        id: get_version
+        run: |
+          export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}')"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-  #     - name: Get version
-  #       id: get_version
-  #       run: |
-  #         export "VERSION=$(cat Chart.yaml | grep version | awk '{print $2}' | awk -F. -v OFS=. '{$NF++; print}')"
-  #         echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Get Chart name
+        id: get_chart
+        run: |
+          export "CHART=$(cat Chart.yaml | grep name | awk '{print $2}')"
+          echo "CHART=$CHART" >> $GITHUB_ENV
 
-  #     - name: Get Chart name
-  #       id: get_chart
-  #       run: |
-  #         export "CHART=$(cat Chart.yaml | grep name | awk '{print $2}')"
-  #         echo "CHART=$CHART" >> $GITHUB_ENV
-
-  #     - name: save helm chart to local registry
-  #       run: |
-  #         helm chart save . '${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}'
+      - name: save helm chart to local registry
+        run: |
+          helm chart save . '${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}'
       
-  #     - name: publish chart to acr
-  #       run: |
-  #         helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
+      - name: publish chart to acr
+        run: |
+          helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
 
