@@ -78,8 +78,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: checkout repo
-        with:
-          path: './helm'
 
       - name: list content
         run: |
