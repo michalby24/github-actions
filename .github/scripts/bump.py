@@ -11,44 +11,44 @@ def has_helm_files_changed():
     
     return bool(result.stdout.strip())
 
-def bump_version():
-    subprocess.run(["git", "checkout", "-qf", "master"])
+# def bump_version():
+#     subprocess.run(["git", "checkout", "-qf", "master"])
 
-    version_result = subprocess.run(
-        ["awk", "/version/{print $2; exit}", "./helm/Chart.yaml"],
-        capture_output=True,
-        text=True,
-        cwd="./helm",
-    )
+#     version_result = subprocess.run(
+#         ["awk", "/version/{print $2; exit}", "./helm/Chart.yaml"],
+#         capture_output=True,
+#         text=True,
+#         cwd="./helm",
+#     )
 
-    current_version = version_result.stdout.strip()
+#     current_version = version_result.stdout.strip()
 
-    new_version_result = subprocess.run(
-        [
-            "awk",
-            "-F.",
-            "-v",
-            "OFS=",
-            '{ $NF++; print }',
-        ],
-        input=current_version,
-        capture_output=True,
-        text=True,
-    )
+#     new_version_result = subprocess.run(
+#         [
+#             "awk",
+#             "-F.",
+#             "-v",
+#             "OFS=",
+#             '{ $NF++; print }',
+#         ],
+#         input=current_version,
+#         capture_output=True,
+#         text=True,
+#     )
 
-    new_version = new_version_result.stdout.strip()
+#     new_version = new_version_result.stdout.strip()
 
-    subprocess.run(
-        [
-            "stefanzweifel/git-auto-commit-action@v4",
-            "--commit-message",
-            f"chore(release) bump version to {new_version}",
-            "--file-pattern",
-            "./helm/Chart.yaml",
-        ]
-    )
+#     subprocess.run(
+#         [
+#             "stefanzweifel/git-auto-commit-action@v4",
+#             "--commit-message",
+#             f"chore(release) bump version to {new_version}",
+#             "--file-pattern",
+#             "./helm/Chart.yaml",
+#         ]
+#     )
 
-    return new_version
+#     return new_version
 
 # if __name__ == "__main__":
 #     if has_helm_files_changed():
@@ -88,15 +88,21 @@ def bump_version_segments(version, condition_index=2):
 def change_version_in_chart(version):
     chart_path = os.path.join("helm", "Chart.yaml")
 
-    # Read the contents of Chart.yaml and replace the version
+    # Read the contents of Chart.yaml and replace the first line that starts with "version"
     found_version_line = False
-    with fileinput.FileInput(chart_path, inplace=True) as file:
+    updated_lines = []
+
+    with open(chart_path, "r") as file:
         for line in file:
             if line.startswith("version:") and not found_version_line:
-                print(f"version: {version}")
+                updated_lines.append(f"version: {version}\n")
                 found_version_line = True
             else:
-                print(line, end="")
+                updated_lines.append(line)
+
+    # Write the updated lines back to Chart.yaml
+    with open(chart_path, "w") as file:
+        file.writelines(updated_lines)
 
 
 # if __name__ == "__main__":
