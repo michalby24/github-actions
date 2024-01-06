@@ -1,6 +1,7 @@
 import os
 import subprocess
 import fileinput
+import shutil
 
 def has_helm_files_changed():
     result = subprocess.run(
@@ -87,17 +88,19 @@ def bump_version_segments(version, condition_index=2):
 
 def change_version_in_chart(version):
     chart_path = os.path.join("helm", "Chart.yaml")
+    temp_chart_path = os.path.join("helm", "Chart_temp.yaml")
 
-    with open(chart_path, "r") as file:
-        lines = file.readlines()
+    found_version_line = False
 
-    for i, line in enumerate(lines):
-        if line.startswith("version:"):
-            lines[i] = f"version: {version}\n"
-            break
+    with open(chart_path, "r") as input_file, open(temp_chart_path, "w") as output_file:
+        for line in input_file:
+            if line.startswith("version:") and not found_version_line:
+                output_file.write(f"version: {version}\n")
+                found_version_line = True
+            else:
+                output_file.write(line)
 
-    with open(chart_path, "w") as file:
-        file.writelines(lines)
+    shutil.move(temp_chart_path, chart_path)
 
 
 # if __name__ == "__main__":
