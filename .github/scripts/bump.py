@@ -83,6 +83,21 @@ def bump_version_segments(version, condition_index=2):
         print(f"Invalid condition_index: {condition_index}")
         return version
 
+
+def change_version_in_chart(version):
+    chart_path = os.path.join("helm", "Chart.yaml")
+
+    # Read the contents of Chart.yaml and replace the version
+    found_version_line = False
+    with fileinput.FileInput(chart_path, inplace=True) as file:
+        for line in file:
+            if line.startswith("version:") and not found_version_line:
+                print(f"version: {version}")
+                found_version_line = True
+            else:
+                print(line, end="")
+
+
 # if __name__ == "__main__":
 #     new_version = get_chart_version()
 #     print(f"Bumped version to {new_version}")
@@ -90,7 +105,7 @@ def bump_version_segments(version, condition_index=2):
 if __name__ == "__main__":
     if True:
         new_version = bump_version_segments(get_chart_version(), 1) 
-
+        change_version_in_chart(new_version)
         print(f"Bumped version to {new_version}")
     else:
         print("No changes in the helm directory.")
