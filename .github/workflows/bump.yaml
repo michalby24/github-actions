@@ -1,4 +1,4 @@
-name: Bump Version
+name: Bump 
 
 on:
   push:
@@ -19,4 +19,4 @@ jobs:
 
       - name: Run Bump Version Script
         run: |
-          python .github/scripts/bump_version.py
+          python .github/scripts/bump.py
