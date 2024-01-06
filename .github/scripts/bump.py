@@ -1,5 +1,6 @@
 import os
 import subprocess
+import fileinput
 
 def has_helm_files_changed():
     result = subprocess.run(
