@@ -1,6 +1,5 @@
 import os
 import subprocess
-import yaml
 
 def has_helm_files_changed():
     result = subprocess.run(
@@ -61,11 +60,12 @@ def get_chart_version():
     chart_path = os.path.join("helm", "Chart.yaml")
 
     with open(chart_path, "r") as chart_file:
-        chart_data = yaml.safe_load(chart_file)
+        for line in chart_file.readlines():
+            if line.startswith("version:"):
+                version = line.split(":")[1].strip()
+                return version
 
-    version = chart_data.get("version", "")
-
-    return version
+    return ""
 
 
 
