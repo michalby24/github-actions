@@ -88,21 +88,16 @@ def bump_version_segments(version, condition_index=2):
 def change_version_in_chart(version):
     chart_path = os.path.join("helm", "Chart.yaml")
 
-    # Read the contents of Chart.yaml and replace the first line that starts with "version"
-    found_version_line = False
-    updated_lines = []
-
     with open(chart_path, "r") as file:
-        for line in file:
-            if line.startswith("version:") and not found_version_line:
-                updated_lines.append(f"version: {version}\n")
-                found_version_line = True
-            else:
-                updated_lines.append(line)
+        lines = file.readlines()
 
-    # Write the updated lines back to Chart.yaml
+    for i, line in enumerate(lines):
+        if line.startswith("version:"):
+            lines[i] = f"version: {version}\n"
+            break
+
     with open(chart_path, "w") as file:
-        file.writelines(updated_lines)
+        file.writelines(lines)
 
 
 # if __name__ == "__main__":
