@@ -89,7 +89,7 @@ def bump_version_segments(version, condition_index=2):
 
 if __name__ == "__main__":
     if True:
-        new_version = bump_version_segments(get_chart_version(), 2) 
+        new_version = bump_version_segments(get_chart_version(), 1) 
 
         print(f"Bumped version to {new_version}")
     else:
