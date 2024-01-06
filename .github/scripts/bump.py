@@ -67,8 +67,29 @@ def get_chart_version():
 
     return ""
 
+def bump_version_segments(version, condition_index=2):
+    # Split the version into segments
+    segments = version.split(".")
 
+    # Check if the condition_index is within the valid range
+    if 0 <= condition_index < len(segments):
+        # Increment the specified segment by 1
+        segments[condition_index] = str(int(segments[condition_index]) + 1)
+
+        # Join the segments to get the new version
+        new_version = ".".join(segments)
+        return new_version
+    else:
+        print(f"Invalid condition_index: {condition_index}")
+        return version
+
+# if __name__ == "__main__":
+#     new_version = get_chart_version()
+#     print(f"Bumped version to {new_version}")
 
 if __name__ == "__main__":
-    new_version = get_chart_version()
-    print(f"Bumped version to {new_version}")
+    if true():
+        new_version = get_chart_version()
+        print(f"Bumped version to {new_version}")
+    else:
+        print("No changes in the helm directory.")
