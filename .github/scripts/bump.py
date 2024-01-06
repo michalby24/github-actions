@@ -56,6 +56,18 @@ def bump_version():
 #     else:
 #         print("No changes in the helm directory.")
 
+def get_chart_version():
+    chart_path = os.path.join("helm", "Chart.yaml")
+
+    with open(chart_path, "r") as chart_file:
+        chart_data = yaml.safe_load(chart_file)
+
+    version = chart_data.get("version", "")
+
+    return version
+
+
+
 if __name__ == "__main__":
-    new_version = bump_version()
+    new_version = get_chart_version()
     print(f"Bumped version to {new_version}")
