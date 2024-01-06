@@ -49,9 +49,13 @@ def bump_version():
 
     return new_version
 
+# if __name__ == "__main__":
+#     if has_helm_files_changed():
+#         new_version = bump_version()
+#         print(f"Bumped version to {new_version}")
+#     else:
+#         print("No changes in the helm directory.")
+
 if __name__ == "__main__":
-    if has_helm_files_changed():
-        new_version = bump_version()
-        print(f"Bumped version to {new_version}")
-    else:
-        print("No changes in the helm directory.")
+    new_version = bump_version()
+    print(f"Bumped version to {new_version}")
