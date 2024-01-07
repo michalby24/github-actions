@@ -55,7 +55,7 @@ def change_version_in_chart2(new_version):
 
 if __name__ == "__main__":
     if True:
-        new_version = bump_version_segments(get_chart_version(), 1) 
+        new_version = bump_version_segments(get_chart_version(), 2) 
         change_version_in_chart2(new_version)
         print(f"Bumped version to {new_version}")
     else:

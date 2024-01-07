@@ -1,24 +1,24 @@
-name: Bump 
+# name: Bump 
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
-jobs:
-  detect-changes:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+# jobs:
+#   detect-changes:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v2
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.x
+#       - name: Setup Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: 3.x
 
-      - name: Run Bump Version Script
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python .github/scripts/bump.py ${{ secrets.GITHUB_TOKEN }}
+#       - name: Run Bump Version Script
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         run: |
+#           python .github/scripts/bump.py ${{ secrets.GITHUB_TOKEN }}
