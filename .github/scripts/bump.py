@@ -106,7 +106,7 @@ def change_version_in_chart(version):
 def change_version_in_chart2(new_version):
     chart_path = os.path.join("helm", "Chart.yaml")
 
-    for line in fileinput.input(chart_file, inplace=True):
+    for line in fileinput.input(chart_path, inplace=True):
         print('{} {}'.format(fileinput.filelineno(), line), end='')
 
 
