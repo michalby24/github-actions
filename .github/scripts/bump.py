@@ -108,8 +108,13 @@ def change_version_in_chart2(new_version):
 
     # Use sed to replace the version line
     subprocess.run(["sed", "-i", f"s/^version: .*/version: {new_version}/", chart_path])
+    subprocess.run(["git", "config", "--global", "user.email", "github-actions@github.com"])
+    subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"])
     subprocess.run(["git", "add", chart_path])
     subprocess.run(["git", "commit", "-m", f"chore(release): bump version to {new_version}"])
+
+    # Push the changes to the repository
+    subprocess.run(["git", "push", "origin", "master"])
 
 # if __name__ == "__main__":
 #     new_version = get_chart_version()
