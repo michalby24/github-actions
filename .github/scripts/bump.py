@@ -48,13 +48,10 @@ def change_version_in_chart2(new_version):
     subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"])
     subprocess.run(["git", "add", chart_path])
     subprocess.run(["git", "commit", "-m", f"chore(release): bump version to {new_version}"])
-
-    # Push the changes to the repository
+    subprocess.run(["git", "fetch"])
+    subprocess.run(["git", "merge", "--ff-only", "origin/master"])
     subprocess.run(["git", "push", "origin", "master"])
 
-# if __name__ == "__main__":
-#     new_version = get_chart_version()
-#     print(f"Bumped version to {new_version}")
 
 if __name__ == "__main__":
     if True:
