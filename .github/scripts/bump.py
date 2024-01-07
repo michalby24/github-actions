@@ -12,52 +12,6 @@ def has_helm_files_changed():
     
     return bool(result.stdout.strip())
 
-# def bump_version():
-#     subprocess.run(["git", "checkout", "-qf", "master"])
-
-#     version_result = subprocess.run(
-#         ["awk", "/version/{print $2; exit}", "./helm/Chart.yaml"],
-#         capture_output=True,
-#         text=True,
-#         cwd="./helm",
-#     )
-
-#     current_version = version_result.stdout.strip()
-
-#     new_version_result = subprocess.run(
-#         [
-#             "awk",
-#             "-F.",
-#             "-v",
-#             "OFS=",
-#             '{ $NF++; print }',
-#         ],
-#         input=current_version,
-#         capture_output=True,
-#         text=True,
-#     )
-
-#     new_version = new_version_result.stdout.strip()
-
-#     subprocess.run(
-#         [
-#             "stefanzweifel/git-auto-commit-action@v4",
-#             "--commit-message",
-#             f"chore(release) bump version to {new_version}",
-#             "--file-pattern",
-#             "./helm/Chart.yaml",
-#         ]
-#     )
-
-#     return new_version
-
-# if __name__ == "__main__":
-#     if has_helm_files_changed():
-#         new_version = bump_version()
-#         print(f"Bumped version to {new_version}")
-#     else:
-#         print("No changes in the helm directory.")
-
 def get_chart_version():
     chart_path = os.path.join("helm", "Chart.yaml")
 
@@ -85,27 +39,9 @@ def bump_version_segments(version, condition_index=2):
         print(f"Invalid condition_index: {condition_index}")
         return version
 
-
-def change_version_in_chart(version):
-    chart_path = os.path.join("helm", "Chart.yaml")
-    temp_chart_path = os.path.join("helm", "Chart_temp.yaml")
-
-    found_version_line = False
-
-    with open(chart_path, "r") as input_file, open(temp_chart_path, "w") as output_file:
-        for line in input_file:
-            if line.startswith("version:") and not found_version_line:
-                output_file.write(f"version: {version}\n")
-                found_version_line = True
-            else:
-                output_file.write(line)
-
-    shutil.move(temp_chart_path, chart_path)
-
-
 def change_version_in_chart2(new_version):
     chart_path = os.path.join("helm", "Chart.yaml")
-
+    github_token = os.environ.get("GITHUB_TOKEN") 
     # Use sed to replace the version line
     subprocess.run(["sed", "-i", f"s/^version: .*/version: {new_version}/", chart_path])
     subprocess.run(["git", "config", "--global", "user.email", "github-actions@github.com"])
