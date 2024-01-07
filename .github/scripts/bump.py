@@ -63,7 +63,7 @@ def bump_version_segments(version, condition_index=2):
         segments[condition_index] += 1
 
         # Check if the incremented segment reaches 9, reset to 0 and bump the next segment
-        if segments[condition_index] == 9:
+        if segments[condition_index] == 10:
             segments[condition_index] = 0
             if condition_index + 1 < len(segments):
                 segments[condition_index + 1] += 1
