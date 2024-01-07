@@ -116,6 +116,7 @@ def change_version_in_chart2(new_version):
 #     print(f"Bumped version to {new_version}")
 
 if __name__ == "__main__":
+    github_token = os.environ.get("GITHUB_TOKEN")
     if True:
         new_version = bump_version_segments(get_chart_version(), 1) 
         change_version_in_chart2(new_version)
