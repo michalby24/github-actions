@@ -103,6 +103,23 @@ def change_version_in_chart(version):
     shutil.move(temp_chart_path, chart_path)
 
 
+def change_version_in_chart2(new_version):
+    chart_path = os.path.join("helm", "Chart.yaml")
+    temp_chart_path = os.path.join("helm", "Chart_temp.yaml")
+
+    found_version_line = False
+
+    with open(chart_path, "r") as input_file, open(temp_chart_path, "w") as output_file:
+        for line in input_file:
+            if line.startswith("version:") and not found_version_line:
+                output_file.write(f"version: {new_version}\n")
+                found_version_line = True
+            else:
+                output_file.write(line)
+
+    shutil.move(temp_chart_path, chart_path)
+
+
 # if __name__ == "__main__":
 #     new_version = get_chart_version()
 #     print(f"Bumped version to {new_version}")
@@ -110,7 +127,7 @@ def change_version_in_chart(version):
 if __name__ == "__main__":
     if True:
         new_version = bump_version_segments(get_chart_version(), 1) 
-        change_version_in_chart(new_version)
+        change_version_in_chart2(new_version)
         print(f"Bumped version to {new_version}")
     else:
         print("No changes in the helm directory.")
