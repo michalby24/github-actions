@@ -21,4 +21,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python .github/scripts/bump.py
+          python .github/scripts/bump.py ${{ secrets.GITHUB_TOKEN }}
