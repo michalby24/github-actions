@@ -106,8 +106,9 @@ def change_version_in_chart(version):
 def change_version_in_chart2(new_version):
     chart_path = os.path.join("helm", "Chart.yaml")
 
-    for line in fileinput.input(chart_path, inplace=True):
-        print('{} {}'.format(fileinput.filelineno(), line), end='')
+    # Use sed to replace the version line
+    subprocess.run(["sed", "-i", f"s/^version: .*/version: {new_version}/", chart_path])
+    subprocess.run(["cat", chart_path])
 
 
 # if __name__ == "__main__":
