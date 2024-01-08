@@ -33,15 +33,10 @@ jobs:
     outputs:
           files_changed: ${{ steps.set.outputs.files_changed }}
 
-  bump_version:
+  chart-update:
     runs-on: ubuntu-latest
     needs: detect-changes
     if: needs.detect-changes.outputs.files_changed == 'yes'
-    outputs:
-      # Define the NEW_VERSION output
-      id: bump_version_output
-      values: 
-        NEW_VERSION: ${{ steps.bump_version.outputs.NEW_VERSION }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -57,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python .github/scripts/bump.py ${{ secrets.GITHUB_TOKEN }}
-         #echo "New version: ${{ steps.bump.outputs.new_version }}"
+          echo "New version: ${{ steps.bump.outputs.new_version }}"
 
   build:
     name: publish acr
