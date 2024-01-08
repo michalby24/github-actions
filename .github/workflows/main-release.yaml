@@ -83,13 +83,13 @@ jobs:
         run: |
           echo $ | helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
 
-      - name: Get version
-        id: get_version
-        run: |
-          VERSION=$(awk '/version/{print $2; exit}' Chart.yaml)
-          NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. '{ $NF++; print }')
-          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
-        working-directory: ./helm
+      # - name: Get version
+      #   id: get_version
+      #   run: |
+      #     VERSION=$(awk '/version/{print $2; exit}' Chart.yaml)
+      #     NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. '{ $NF++; print }')
+      #     echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+      #   working-directory: ./helm
 
       - name: Get Chart name
         id: get_chart
@@ -100,11 +100,11 @@ jobs:
 
       - name: save helm chart to local registry
         run: |
-          helm chart save . '${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}'
+          helm chart save . '${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ needs.semantic-release.outputs.new_version }}'
         working-directory: ./helm
       
       - name: publish chart to acr
         run: |
-          helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VERSION }}
+          helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ needs.semantic-release.outputs.new_version }}
         working-directory: ./helm
 
