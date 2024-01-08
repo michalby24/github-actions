@@ -28,8 +28,8 @@ jobs:
       - name: Set output if any file(s) in the Helm folder change
         if: steps.check_helm_changes.outputs.any_changed == 'true'
         run: echo "::set-output name=files_changed::yes"
-        outputs:
-          run_job_b: ${{ steps.set.outputs.files_changed }}
+    outputs:
+          files_changed: ${{ steps.set.outputs.files_changed }}
 
   semantic-release:
     runs-on: ubuntu-latest
