@@ -23,8 +23,9 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v40
         with:
-          files: helm/**  # Alternatively using: `docs/**`
+          files: helm/**
 
+#
       - name: Run step if any file(s) in the helm folder change
         id: set
         if: steps.changed-files-specific.outputs.any_changed == 'true'
