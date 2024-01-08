@@ -1,7 +1,7 @@
 apiVersion: v2
 name: michal-test-chart
 description: A Helm chart for Kubernetes
-version: 2.1.8
+version: 2.1.9
 dependencies:
   - name: prometheus
     version: 23.3.0
