@@ -48,6 +48,7 @@ jobs:
           python-version: 3.x
 
       - name: Run Bump Version Script
+        id: bump_version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
