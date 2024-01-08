@@ -30,8 +30,7 @@ jobs:
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           echo "::set-output name=files_changed::yes"
-    outputs:
-          files_changed: ${{ steps.set.outputs.files_changed }}
+
 
   semantic-release:
     runs-on: ubuntu-latest
