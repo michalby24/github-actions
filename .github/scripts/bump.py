@@ -43,6 +43,6 @@ def generate_new_version(version):
     return new_version
 
 if __name__ == "__main__":
-    new_version = bump_version_segments(get_chart_version())
-    change_version_in_chart(new_version)
+    new_version = generate_new_version(get_chart_version())
+    update_chart_version(new_version)
     print(f"Bumped version to {new_version}")
