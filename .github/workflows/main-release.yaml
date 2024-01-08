@@ -52,12 +52,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python .github/scripts/bump.py ${{ secrets.GITHUB_TOKEN }}
-          echo "NEW_VERSION=${{ steps.bump.outputs.new_version }}" >> "$GITHUB_OUTPUT"
+          echo "New version: ${{ steps.bump.outputs.new_version }}" >> "$GITHUB_OUTPUT"
 
-      - name: Get color
-        env:
-          NEW_VERSION: ${{ steps.bump_version.outputs.NEW_VERSION }}
-        run: echo "The new version is $SELECTED_COLOR"
+      - name: Use New Version
+        run: |
+          echo "New Version: ${{ steps.bump_version.outputs.NEW_VERSION }}"
 
 
   build:
