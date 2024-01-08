@@ -54,11 +54,16 @@ jobs:
           python .github/scripts/bump.py ${{ secrets.GITHUB_TOKEN }}
           echo "New version: ${{ steps.bump.outputs.new_version }}"
 
+      - name: Use New Version
+        run: |
+          echo "New Version: ${{ steps.bump_version.outputs.NEW_VERSION }}"
+
+
   build:
     name: publish acr
     runs-on: ubuntu-latest
     environment: prod
-    needs: chart-update
+    needs: semantic-release
     steps:
       - uses: actions/checkout@v2
         name: checkout repo
@@ -71,11 +76,6 @@ jobs:
       - name: login to acr using helm
         run: |
           echo $ | helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
-
-      - name: Use New Version
-        run: |
-          # Access the NEW_VERSION output from the previous job
-          echo "New Version: ${{ needs.chart-update.outputs.NEW_VERSION }}"
 
       - name: Get version
         id: get_version
