@@ -20,21 +20,24 @@ jobs:
           fetch-depth: 2
 
       - name: Get changed files in the Helm Folder
-        id: check_helm_changes
+        id: changed-files-specific
         uses: tj-actions/changed-files@v40
         with:
           files: helm/**
 
-      - name: Set output if any file(s) in the Helm folder change
-        if: steps.check_helm_changes.outputs.any_changed == 'true'
-        run: echo "::set-output name=files_changed::yes"
+#
+      - name: Run step if any file(s) in the helm folder change
+        id: set
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          echo "::set-output name=run_job_b::yes"
     outputs:
-          files_changed: ${{ steps.set.outputs.files_changed }}
+          run_job_b: ${{ steps.set.outputs.run_job_b }}
 
   semantic-release:
     runs-on: ubuntu-latest
     needs: detect-changes
-    if: needs.detect-changes.outputs.files_changed == 'yes'
+    if: needs.detect-changes.outputs.run_job_b == 'yes'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
