@@ -17,9 +17,9 @@ def update_chart_version(new_version):
     github_token = os.environ.get("GITHUB_TOKEN") 
     # Use sed to replace the version line
     subprocess.run(["sed", "-i", f"s/^version: .*/version: {new_version}/", chart_path])
-    # TODO: check if really necessary 
-    subprocess.run(["git", "config", "--global", "user.email", "github-actions@github.com"])
-    subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"])
+    # # TODO: check if really necessary 
+    # subprocess.run(["git", "config", "-`-global", "user.email", "github-actions@github.com"])
+    # subprocess.run(["git", "config", "--global", "user.name", "GitHub Actions"])
     subprocess.run(["git", "add", chart_path])
     subprocess.run(["git", "commit", "-m", f"chore(release): bump version to {new_version}"])
     subprocess.run(["git", "push", "origin", "master"])
