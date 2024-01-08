@@ -70,7 +70,7 @@ jobs:
       - name: Use New Version
         run: |
           # Access the NEW_VERSION output from the semantic-release job
-          echo "New Version: ${{ needs.semantic-release.outputs.NEW_VERSION }}"
+          echo "New Version: ${{ needs.semantic-release.outputs.new_version }}"
       
       - uses: actions/checkout@v2
         name: checkout repo
