@@ -52,13 +52,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python .github/scripts/bump.py ${{ secrets.GITHUB_TOKEN }}
-          echo "New version: ${{ steps.bump.outputs.new_version }}"
 
       - name: Use New Version
         run: |
           echo "New Version: ${{ steps.bump_version.outputs.NEW_VERSION }}"
     outputs:
-          new_version: ${{ steps.set.outputs.NEW_VERSION }}
+          new_version: ${{ steps.bump_version.outputs.NEW_VERSION }}
 
 
   build:
