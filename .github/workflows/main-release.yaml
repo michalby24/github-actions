@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "New Version: ${{ steps.bump_version.outputs.NEW_VERSION }}"
     outputs:
-      new_version: ${{ steps.set.outputs.NEW_VERSION }}
+          new_version: ${{ steps.set.outputs.NEW_VERSION }}
 
 
   build:
