@@ -56,7 +56,7 @@ jobs:
 
       - name: Use New Version
         run: |
-         echo "Using new version: ${{ steps.bump.outputs.new_version }}"
+          echo "New Version: ${{ steps.bump_version.outputs.NEW_VERSION }}"
 
 
   build:

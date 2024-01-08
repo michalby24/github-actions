@@ -47,3 +47,6 @@ if __name__ == "__main__":
     new_version = generate_new_version(get_chart_version())
     update_chart_version(new_version)
     print(f"Bumped version to {new_version}")
+    print(f"::set-env name=NEW_VERSION::{new_version}")
+
+
