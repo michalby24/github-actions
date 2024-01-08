@@ -58,6 +58,7 @@ jobs:
         run: |
           echo "New Version: ${{ steps.bump_version.outputs.NEW_VERSION }}"
     outputs:
+      id: semantic-release
       values:
         NEW_VERSION: ${{ steps.bump_version.outputs.NEW_VERSION }}
 
