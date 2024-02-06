@@ -19,3 +19,14 @@ jobs:
           echo "version: $VERSION"
         env:
           VERSION: ${{ inputs.version }}
+  get-version:
+    runs-on: ubuntu-latest
+    steps:    
+      - uses: actions/checkout@v2
+        name: checkout repo
+
+      - name: Get version
+        id: get_version
+        run: |
+          export "VERSION=$(cat package.json | grep version | awk '{print $2; exit}')"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
