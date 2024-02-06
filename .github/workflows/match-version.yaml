@@ -39,10 +39,10 @@ jobs:
 
       - name: Change
         run: |
-          sed -i 's/^version:.*/version: {new_version}/' {chart_path};
-          sed -i 's/^appVersion:.*/appVersion: {new_version}/' {chart_path};
+          sed -i 's/^version:.*/version: {new_version}/' Chart.yaml;
+          sed -i 's/^appVersion:.*/appVersion: {new_version}/' Chart.yaml;
           git config --global user.email 'github-actions@github.com';
           git config --global user.name 'GitHub Actions';
-          git add {chart_path};
+          git add Chart.yaml;
           git commit -m 'chore(release): bump version to {new_version}';
           git push origin master;
