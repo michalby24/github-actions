@@ -39,8 +39,8 @@ jobs:
 
       - name: Change
         run: |
-          sed -i 's/^version:.*/version: $VERSION/' helm/Chart.yaml;
-          sed -i 's/^appVersion:.*/appVersion: $VERSION/' helm/Chart.yaml;
+          sed -i 's/^version:.*/version: ${{ inputs.version }}' helm/Chart.yaml;
+          sed -i 's/^appVersion:.*/appVersion: ${{ inputs.version }}' helm/Chart.yaml;
           git config --global user.email 'github-actions@github.com';
           git config --global user.name 'GitHub Actions';
           git add helm/Chart.yaml;
