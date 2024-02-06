@@ -28,5 +28,4 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          export "VERSION=$(cat package.json | grep "version" | awk '{print $2; exit}')"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo (cat package.json | grep "version" | awk '{print $2; exit}')
