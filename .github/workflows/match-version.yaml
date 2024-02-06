@@ -39,10 +39,10 @@ jobs:
 
       - name: Change
         run: |
-          sed -i 's/^version:.*/version: {new_version}/' helm/Chart.yaml;
-          sed -i 's/^appVersion:.*/appVersion: {new_version}/' helm/Chart.yaml;
+          sed -i 's/^version:.*/version: $VERSION/' helm/Chart.yaml;
+          sed -i 's/^appVersion:.*/appVersion: $VERSION/' helm/Chart.yaml;
           git config --global user.email 'github-actions@github.com';
           git config --global user.name 'GitHub Actions';
           git add helm/Chart.yaml;
-          git commit -m 'chore(release): bump version to {new_version}';
+          git commit -m 'chore(release): bump version to $VERSION';
           git push origin master;
