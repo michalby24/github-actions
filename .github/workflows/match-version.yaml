@@ -35,14 +35,11 @@ jobs:
         if: ${{ inputs.version == '' }}
         run: |
           VERSION=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
-          echo "Version: $VERSION >> $GITHUB_ENV"
+          echo "Version: $VERSION" 
 
-      - name: Change
+      - name: Run Match Version Script
+        id: match_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          sed -i 's/^version:.*/version: ${{ inputs.version }}' helm/Chart.yaml;
-          sed -i 's/^appVersion:.*/appVersion: ${{ inputs.version }}' helm/Chart.yaml;
-          git config --global user.email 'github-actions@github.com';
-          git config --global user.name 'GitHub Actions';
-          git add helm/Chart.yaml;
-          git commit -m 'chore(release): bump version to $VERSION';
-          git push origin master;
+          python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
