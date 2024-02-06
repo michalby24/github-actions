@@ -10,6 +10,12 @@ on:
       version:
         required: false
         type: string
+env:
+  HELM_EXPERIMENTAL_OCI: 1
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   log-the-inputs:
@@ -30,3 +36,13 @@ jobs:
         run: |
           VERSION=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
           echo "Version: $VERSION"
+
+      - name: Change
+        run: |
+          sed -i 's/^version:.*/version: {new_version}/' {chart_path};
+          sed -i 's/^appVersion:.*/appVersion: {new_version}/' {chart_path};
+          git config --global user.email 'github-actions@github.com';
+          git config --global user.name 'GitHub Actions';
+          git add {chart_path};
+          git commit -m 'chore(release): bump version to {new_version}';
+          git push origin master;
