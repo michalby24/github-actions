@@ -28,5 +28,5 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          temp = (cat package.json | grep "version" | awk '{print $2; exit}' | tr -d '",')
+          temp = cat package.json | grep "version" | awk '{print $2; exit}' | tr -d '",'
           echo $temp
