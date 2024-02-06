@@ -15,7 +15,8 @@ jobs:
   log-the-inputs:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - if: ${{ inputs.version != '' }}
+        run: |
           echo "version: $VERSION"
         env:
           VERSION: ${{ inputs.version }}
@@ -27,5 +28,5 @@ jobs:
         id: get_version
         if: ${{ inputs.version == '' }}
         run: |
-          VERSION=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          CHART=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
+          echo "CHART=$CHART" >> $GITHUB_ENV
