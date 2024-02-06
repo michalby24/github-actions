@@ -31,6 +31,7 @@ def get_chart_version():
         for line in file.readlines():
             if line.startswith("version"):
                 version = line.split(":")[1].strip()
+                print(version)
                 return version
                 
     raise Exception('Error with chart version')
