@@ -27,6 +27,6 @@ jobs:
 
       - name: Get version
         id: get_version
-      run: |
-        CHART=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
-        echo "Version: $CHART"
+        run: |
+          CHART=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
+          echo "Version: $CHART"
