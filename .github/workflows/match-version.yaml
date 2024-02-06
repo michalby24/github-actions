@@ -19,10 +19,9 @@ jobs:
           echo "version: $VERSION"
         env:
           VERSION: ${{ inputs.version }}
-  get-version:
-    runs-on: ubuntu-latest
-    steps:    
+
       - uses: actions/checkout@v2
+        if: ${{ inputs.version != '' }}
         name: checkout repo
 
       - name: Get version
