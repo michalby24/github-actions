@@ -27,5 +27,5 @@ jobs:
         id: get_version
         if: ${{ inputs.version == '' }}
         run: |
-          CHART=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
-          echo "Version: $CHART"
+          VERSION=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
