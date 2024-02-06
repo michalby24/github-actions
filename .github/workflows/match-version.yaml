@@ -34,11 +34,12 @@ jobs:
         id: get_version
         if: ${{ inputs.version == '' }}
         run: |
-          VERSION=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
-          echo "  VERSION=$VERSION" >> $GITHUB_ENV
+           cat package.json  # Debugging line: Print the content of package.json
+           export VERSION=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
+           echo "Extracted version: $VERSION"  # Debugging line: Print the extracted version
+           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Run Match Version Script
-        id: match_version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: $VERSION
