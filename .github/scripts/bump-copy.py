@@ -29,7 +29,7 @@ def get_chart_version():
 
     with open(path, "r") as file:
         for line in file.readlines():
-            if line.startswith("version:"):
+            if line.startswith("version"):
                 version = line.split(":")[1].strip()
                 return version
                 
