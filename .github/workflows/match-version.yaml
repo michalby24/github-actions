@@ -2,9 +2,9 @@ name: "hey"
 
 on:
   push:
-    tags:
-      - "v*"
-      
+     branches:
+      - master
+
   workflow_dispatch:
     inputs:
       version:
