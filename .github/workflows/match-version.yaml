@@ -28,4 +28,5 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          export "VERSION=$(cat package.json | grep "version" | awk '{print $2; exit}' | tr -d '",')"
+          export "VERSION=$(cat package.json | grep "version" | awk '{print $2; exit}')"
+          export "TEMP=$(echo $VERSION  | tr -d '",')"
