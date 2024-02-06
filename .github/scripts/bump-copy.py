@@ -14,7 +14,7 @@ def update_chart_version(new_version):
     subprocess.run(commands, shell=True)
 
 if __name__ == "__main__":
-    input_variable = os.environ.get('VERSION')
+    new_version = os.environ.get('VERSION')
     update_chart_version(new_version)
     print(f"Bumped version to {new_version}")
     print(f"::set-output name=NEW_VERSION::{new_version}")
