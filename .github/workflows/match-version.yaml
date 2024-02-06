@@ -25,7 +25,7 @@ jobs:
 
       - name: Get version
         id: get_version
-        if: ${{ inputs.version != '' }}
+        if: ${{ inputs.version == '' }}
         run: |
           CHART=$(cat package.json | grep '"version"' | awk -F '"' '{print $4; exit}')
           echo "Version: $CHART"
