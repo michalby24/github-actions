@@ -28,4 +28,4 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          echo (cat package.json | grep "version" | awk '{print $2; exit}')
+         cat package.json | grep "version" | awk '{print $2; exit}'
