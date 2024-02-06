@@ -1,3 +1,5 @@
+name: "hey"
+
 on:
   workflow_dispatch:
     inputs:
