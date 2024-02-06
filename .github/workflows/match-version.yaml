@@ -28,4 +28,4 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          export "CHART=$(cat package.json | grep "version" | awk '{print $2; exit}' | tr -d '",')"
+          export "CHART=$(cat package.json | grep '"version"' | awk -F '"' '{print $4}')"
