@@ -50,9 +50,9 @@ jobs:
       - name: Run Match Version Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
+          # VERSION: ${{ steps.get_version.outputs.VERSION }}
         run: |
-          python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} $VERSION
+          python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} ${{ steps.get_version.outputs.VERSION }}
 
   # build:
   #   name: publish acr
