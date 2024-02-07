@@ -46,15 +46,11 @@ jobs:
           VERSION=$(cat package.json | jq -r '.version')
           echo "Extracted version: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          MICH=$(echo "'1.2.5'")
-          echo "Extracted mich: $MICH"
-          echo "MICH=$MICH" >> $GITHUB_ENV
-
 
       - name: Run Match Version Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.bump_version.outputs.VERSION }}
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
         run: |
           python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }}
 
