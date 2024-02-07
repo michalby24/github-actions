@@ -43,7 +43,7 @@ jobs:
         id: get_version
         if: ${{ inputs.version == '' }}
         run: |
-          VERSION=$(cat package.json | jq -r '.version' | sed 's/^/"/;s/$/"/')
+          VERSION=$(cat package.json | jq -r '.version' | sed 's/^/'/;s/$/'/')
           echo "Extracted version: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
