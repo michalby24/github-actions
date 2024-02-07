@@ -52,6 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # VERSION: ${{ steps.get_version.outputs.VERSION }}
         run: |
+          echo ${{ steps.get_version.outputs.VERSION }}
           python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} ${{ steps.get_version.outputs.VERSION }}
 
   # build:
