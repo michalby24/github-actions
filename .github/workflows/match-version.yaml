@@ -45,7 +45,8 @@ jobs:
         run: |
           VERSION=$(cat package.json | jq -r '.version')
           echo "Extracted version: $VERSION"
-          echo "VERSION='1.2.4'" >> $GITHUB_ENV
+          echo "MICH='1.2.4'" >> $GITHUB_ENV
+          echo "mich: $MICH"
 
       - name: Run Match Version Script
         env:
