@@ -45,12 +45,12 @@ jobs:
         run: |
           VERSION=$(cat package.json | jq -r '.version')
           echo "Extracted version: $VERSION"
-          echo "VERSION='$VERSION'" >> $GITHUB_ENV
+          echo "VERSION='1.2.4'" >> $GITHUB_ENV
 
       - name: Run Match Version Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # VERSION: $VERSION
+          VERSION: $VERSION
         run: |
           python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }}
 
