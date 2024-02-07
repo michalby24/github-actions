@@ -50,7 +50,6 @@ jobs:
       - name: Run Match Version Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        args:
           VERSION: $(cat package.json | jq -r '.version' | sed "s/^/'/;s/$/'/")
         run: |
           echo ${{ steps.get_version.outputs.VERSION }}
