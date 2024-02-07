@@ -45,7 +45,7 @@ jobs:
         run: |
           VERSION=$(cat package.json | jq -r '.version' | sed "s/^/'/;s/$/'/")
           echo "Extracted version: $VERSION"
-          echo "{version}={$VERSION}" >> $GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Run Match Version Script
         env:
@@ -53,6 +53,7 @@ jobs:
           # VERSION: ${{ steps.get_version.outputs.VERSION }}
         run: |
           echo ${{ steps.get_version.outputs.VERSION }}
+          echo $VERSION
           python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} ${{ steps.get_version.outputs.VERSION }}
 
   # build:
