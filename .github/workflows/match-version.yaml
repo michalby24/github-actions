@@ -54,7 +54,7 @@ jobs:
       - name: Run Match Version Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          #VERSION: $MICH
+          VERSION: $MICH
         run: |
           python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }}
 

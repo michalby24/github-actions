@@ -69,9 +69,7 @@ def generate_new_version(version):
     return new_version
 
 if __name__ == "__main__":
-    version = get_chart_version()
-    print(version)
-    new_version = '1.2.3'
+    new_version = os.environ.get('VERSION')
     update_chart_version(new_version)
     print(f"Bumped version to {new_version}")
     print(f"::set-output name=NEW_VERSION::{new_version}")
