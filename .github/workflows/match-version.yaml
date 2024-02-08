@@ -34,7 +34,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=${{ secrets.GITHUB_TOKEN }} python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
+          VERSION=${{ inputs.version }} python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
 
       # - name: Get version
       #   id: get_version
