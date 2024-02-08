@@ -73,7 +73,7 @@ if __name__ == "__main__":
     try:
         new_version = os.environ['VERSION']
         print(new_version)
-    else:
+    except:
         print("michsi")
     #update_chart_version(new_version)
     #print(f"Bumped version to {new_version}")
