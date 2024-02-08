@@ -25,18 +25,25 @@ jobs:
         name: checkout repo
 
       - name: Run Match Version Script
+        id: input_version
         if: ${{ inputs.version != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=${{ inputs.version }} python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
+          echo "New Version: ${{ steps.input_version.outputs.NEW_VERSION }}"
 
       - name: Run Match Version Script
+        id: generated_version
         if: ${{ inputs.version == '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(cat package.json | jq -r '.version' | sed "s/^/'/;s/$/'/") python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
+          echo "New Version: ${{ steps.generated_version.outputs.NEW_VERSION }}"
+    outputs:
+          new_version: ${{ steps.generated_version.outputs.NEW_VERSION }}
+
 
   build:
     name: publish acr
