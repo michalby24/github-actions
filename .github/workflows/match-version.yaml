@@ -19,7 +19,6 @@ permissions:
 
 jobs:
   chart-update:
-    if: ${{ inputs.version != '' }}
     runs-on: ubuntu-latest
     steps:         
       - uses: actions/checkout@v2
