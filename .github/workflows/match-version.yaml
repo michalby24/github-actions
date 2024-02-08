@@ -21,11 +21,12 @@ jobs:
   log-the-inputs:
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ inputs.version != '' }}
+      
         run: |
           echo "version: $VERSION"
         env:
           VERSION: ${{ inputs.version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v2
         name: checkout repo
@@ -43,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: $(cat package.json | jq -r '.version' | sed "s/^/'/;s/$/'/")
         run: |
-          VERSION python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
+          VERSION=$VERSION python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
 
   # build:
   #   name: publish acr
