@@ -35,38 +35,38 @@ jobs:
           new_version: ${{ steps.input_version.outputs.NEW_VERSION }}
 
 
-  build:
-    name: publish acr
-    runs-on: ubuntu-latest
-    environment: prod
-    needs: chart-update
-    steps:    
-      - uses: actions/checkout@v2
-        name: checkout repo
+  # build:
+  #   name: publish acr
+  #   runs-on: ubuntu-latest
+  #   environment: prod
+  #   needs: chart-update
+  #   steps:    
+  #     - uses: actions/checkout@v2
+  #       name: checkout repo
 
-      - name: install helm
-        uses: Azure/setup-helm@v1
-        with:
-          version: 'v3.6.3'
+  #     - name: install helm
+  #       uses: Azure/setup-helm@v1
+  #       with:
+  #         version: 'v3.6.3'
 
-      - name: login to acr using helm
-        run: |
-          helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
+  #     - name: login to acr using helm
+  #       run: |
+  #         helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
 
-      - name: Get Chart name
-        id: get_chart
-        run: |
-          export "CHART=$(cat Chart.yaml | grep name | awk '{print $2; exit}')"
-          echo "CHART=$CHART" >> $GITHUB_ENV
+  #     - name: Get Chart name
+  #       id: get_chart
+  #       run: |
+  #         export "CHART=$(cat Chart.yaml | grep name | awk '{print $2; exit}')"
+  #         echo "CHART=$CHART" >> $GITHUB_ENV
 
-        working-directory: ./helm
+  #       working-directory: ./helm
 
-      - name: save helm chart to local registry
-        run: |
-          helm chart save . '${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ needs.chart-update.outputs.new_version }}'
-        working-directory: ./helm
+  #     - name: save helm chart to local registry
+  #       run: |
+  #         helm chart save . '${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ needs.chart-update.outputs.new_version }}'
+  #       working-directory: ./helm
       
-      - name: publish chart to acr
-        run: |
-          helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ needs.chart-update.outputs.new_version }}
-        working-directory: ./helm
+  #     - name: publish chart to acr
+  #       run: |
+  #         helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ needs.chart-update.outputs.new_version }}
+  #       working-directory: ./helm

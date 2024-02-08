@@ -71,7 +71,7 @@ def generate_new_version(version):
 
 if __name__ == "__main__":
     new_version = os.environ['VERSION']
-    if(new_version != None):
+    if(new_version is None):
         print(new_version)
     else:
         print("mich")
