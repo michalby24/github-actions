@@ -18,32 +18,22 @@ permissions:
   pull-requests: write
 
 jobs:
-  chart-with-input:
+  chart-update:
     if: ${{ inputs.version != '' }}
     runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "version: $VERSION"
-        env:
-          VERSION: ${{ inputs.version }}
-          
+    steps:         
       - uses: actions/checkout@v2
         name: checkout repo
 
       - name: Run Match Version Script
+        if: ${{ inputs.version != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=${{ inputs.version }} python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
 
-  chart-without-input:
-    if: ${{ inputs.version == '' }}
-    runs-on: ubuntu-latest
-    steps:        
-      - uses: actions/checkout@v2
-        name: checkout repo
-
       - name: Run Match Version Script
+        if: ${{ inputs.version == '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
