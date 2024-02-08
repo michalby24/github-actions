@@ -23,6 +23,7 @@
 import os
 import subprocess
 
+
 def get_chart_version():
     path = 'package.json'
     #chart_path = os.path.join("helm", "Chart.yaml")
@@ -69,9 +70,12 @@ def generate_new_version(version):
     return new_version
 
 if __name__ == "__main__":
-    new_version = os.environ['VERSION']
-    print(new_version)
-    update_chart_version(new_version)
-    print(f"Bumped version to {new_version}")
-    print(f"::set-output name=NEW_VERSION::{new_version}")
+    try:
+        new_version = os.environ['VERSION']
+        print(new_version)
+    else:
+        print("michsi")
+    #update_chart_version(new_version)
+    #print(f"Bumped version to {new_version}")
+    #print(f"::set-output name=NEW_VERSION::{new_version}")
 
