@@ -68,6 +68,7 @@ jobs:
         run: |
           export "CHART=$(cat Chart.yaml | grep name | awk '{print $2; exit}')"
           echo "CHART=$CHART" >> $GITHUB_ENV
+          echo ${{ env.new_version }}
         working-directory: ./helm
 
       - name: save helm chart to local registry
