@@ -70,8 +70,8 @@ def generate_new_version(version):
     return new_version
 
 if __name__ == "__main__":
-    try:
-        new_version = os.environ['VERSION']
+    new_version = os.environ['VERSION']
+    if(new_version != None):
         print(new_version)
     else:
         print("mich")
