@@ -71,9 +71,10 @@ def generate_new_version(version):
 
 if __name__ == "__main__":
     new_version = os.environ['VERSION']
-    print(new_version)
     if(new_version):
         print(new_version)
+        update_chart_version(new_version)
+        print(f"Bumped version to {new_version}")
     else:
         print("mich")
     #update_chart_version(new_version)
