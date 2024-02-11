@@ -10,8 +10,10 @@ def get_chart_version():
                 print("Line detected:", line.strip())
                 parts = line.split(":")
                 if len(parts) >= 2:
+                    print(parts[1])
                     version = parts[1].strip('"').strip('"')
                     print("Extracted version:", version)
+                    print(version)
                     return version
                 else:
                     print("Unexpected line format:", line.strip())
