@@ -10,7 +10,7 @@ def get_chart_version():
                 print("Line detected:", line.strip())
                 parts = line.split(":")
                 if len(parts) >= 2:
-                    version = parts[1].strip('"').strip()
+                    version = parts[1].strip('"').strip('"')
                     print("Extracted version:", version)
                     return version
                 else:
@@ -38,7 +38,7 @@ def update_chart_version(new_version):
 if __name__ == "__main__":
     new_version = os.environ['VERSION']
     if(new_version == ''):
-        new_version = get_chart_version().strip('""')
+        new_version = get_chart_version().strip('"')
         
     update_chart_version(new_version)
     print(f"Bumped version to {new_version}")
