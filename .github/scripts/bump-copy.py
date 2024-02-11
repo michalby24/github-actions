@@ -27,12 +27,13 @@ def update_chart_version(new_version):
     print(new_version)
     chart_path = os.path.join("helm", "Chart.yaml")
     commands = f"""
-        sed -i 's/^version:.*/version: {new_version}/' {chart_path};
-        sed -i 's/^appVersion:.*/appVersion: {new_version}/' {chart_path};
+        version_1=$(echo {new_version} | tr -d '"')
+        sed -i 's/^version:.*/version: {version_1}/' {chart_path};
+        sed -i 's/^appVersion:.*/appVersion: {version_1}/' {chart_path};
         git config --global user.email 'github-actions@github.com';
         git config --global user.name 'GitHub Actions';
         git add {chart_path};
-        git commit -m 'chore(release): bump version to {new_version}';
+        git commit -m 'chore(release): bump version to {version_1}';
         git push origin master;
     """
 
