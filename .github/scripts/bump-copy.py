@@ -27,7 +27,7 @@ def update_chart_version(new_version):
     print(new_version)
     chart_path = os.path.join("helm", "Chart.yaml")
     commands = f"""
-        version_1=$(echo {new_version} | tr -d '"')
+        version_1=$(echo {new_version} | tr -d ',' | tr -d '"')
         sed -i 's/^version:.*/version: $version_1/' {chart_path};
         sed -i 's/^appVersion:.*/appVersion: $version_1/' {chart_path};
         git config --global user.email 'github-actions@github.com';
