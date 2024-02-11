@@ -25,12 +25,14 @@ import subprocess
 
 
 def get_chart_version():
-    path = './package.json'
+    path = 'package.json'
     #chart_path = os.path.join("helm", "Chart.yaml")
 
     with open(path, "r") as file:
+        print("mic")
         for line in file.readlines():
             if line.startswith("version"):
+                print("line detected")
                 version = line.split(":")[1].strip()
                 print(version)
                 return version
