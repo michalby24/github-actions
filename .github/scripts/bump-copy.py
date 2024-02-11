@@ -32,7 +32,7 @@ def get_chart_version():
                 print("Line detected:", line.strip())
                 parts = line.split(":")
                 if len(parts) >= 2:
-                    version = parts[1].strip('"').strip('"')
+                    version = parts[1].strip('"').strip()
                     print("Extracted version:", version)
                     return version
                 else:
@@ -73,32 +73,34 @@ def update_chart_version(new_version):
     subprocess.run(commands, shell=True)
 
 
-def generate_new_version(version):
-    # Split the version into segments
-    major, minor, patch = map(int, version.split("."))
+# def generate_new_version(version):
+#     # Split the version into segments
+#     major, minor, patch = map(int, version.split("."))
 
-    patch += 1
+#     patch += 1
 
-    if patch == 10:
-        patch = 0
-        minor += 1
+#     if patch == 10:
+#         patch = 0
+#         minor += 1
 
-        if minor == 10:
-            minor = 0
-            major += 1
+#         if minor == 10:
+#             minor = 0
+#             major += 1
 
-    new_version = f"{major}.{minor}.{patch}"
-    return new_version
+#     new_version = f"{major}.{minor}.{patch}"
+#     return new_version
 
 if __name__ == "__main__":
     new_version = os.environ['VERSION']
     if(new_version):
-        print(new_version)
+        # print(new_version)
         update_chart_version(new_version)
         print(f"Bumped version to {new_version}")
     else:
         print("mich")
-        print(get_chart_version())
+        # print(get_chart_version())
+        update_chart_version(get_chart_version())
+        print(f"Bumped version to {new_version}")
     #update_chart_version(new_version)
     #print(f"Bumped version to {new_version}")
     #print(f"::set-output name=NEW_VERSION::{new_version}")
