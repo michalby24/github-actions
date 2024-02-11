@@ -7,7 +7,7 @@ def get_chart_version():
     with open(path, "r") as file:
         for line in file:
             if '"version"' in line:
-                #print("Line detected:", line.strip())
+                print("Line detected:", line.strip())
                 parts = line.split(":")
                 if len(parts) >= 2:
                     #print(parts[1])
