@@ -31,6 +31,7 @@ def get_chart_version():
     with open(path, "r") as file:
         print("mic")
         for line in file.readlines():
+            print("something")
             if line.startswith("version"):
                 print("line detected")
                 version = line.split(":")[1].strip()
