@@ -29,12 +29,11 @@ def get_chart_version():
     #chart_path = os.path.join("helm", "Chart.yaml")
 
     with open(path, "r") as file:
-        return("mic")
-        # for line in file.readlines():
-        #     if line.startswith("version"):
-        #         version = line.split(":")[1].strip()
-        #         print(version)
-        #         return version
+        for line in file.readlines():
+            if line.startswith("version"):
+                version = line.split(":")[1].strip()
+                print(version)
+                return version
                 
     raise Exception('Error with chart version')
 
