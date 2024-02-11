@@ -23,22 +23,38 @@
 import os
 import subprocess
 
-
 def get_chart_version():
     path = 'package.json'
-    #chart_path = os.path.join("helm", "Chart.yaml")
 
     with open(path, "r") as file:
-        print("mic")
-        for line in file.readlines():
-            print("something")
-            if line.startswith('"version"'):
-                print("line detected")
-                version = line.split(":")[1].strip()
-                print(version)
-                return version
-
+        for line in file:
+            if '"version"' in line:
+                print("Line detected:", line.strip())
+                parts = line.split(":")
+                if len(parts) >= 2:
+                    version = parts[1].strip().strip('"')
+                    print("Extracted version:", version)
+                    return version
+                else:
+                    print("Unexpected line format:", line.strip())
+        print("No line starting with 'version' found.")
+        return None
     return("bummer")
+# def get_chart_version():
+#     path = 'package.json'
+#     #chart_path = os.path.join("helm", "Chart.yaml")
+
+#     with open(path, "r") as file:
+#         print("mic")
+#         for line in file.readlines():
+#             print("something")
+#             if line.startswith('"version"'):
+#                 print("line detected")
+#                 version = line.split(":")[1].strip()
+#                 print(version)
+#                 return version
+
+#     return("bummer")
                 
     raise Exception('Error with chart version')
 
