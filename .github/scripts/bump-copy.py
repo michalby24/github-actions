@@ -24,6 +24,7 @@ def get_chart_version():
     raise Exception('Error with chart version')
 
 def update_chart_version(new_version):
+    print(new_version)
     chart_path = os.path.join("helm", "Chart.yaml")
     commands = f"""
         sed -i 's/^version:.*/version: {new_version}/' {chart_path};
