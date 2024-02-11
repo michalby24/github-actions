@@ -30,7 +30,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=${{ inputs.version }} python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
-          echo "new_version=${{ steps.input_version.outputs.NEW_VERSION }}" >> $GITHUB_OUTPUT
     outputs:
           new_version: ${{ steps.input_version.outputs.NEW_VERSION }}
 
