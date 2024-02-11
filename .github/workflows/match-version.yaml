@@ -32,7 +32,7 @@ jobs:
           VERSION=${{ inputs.version }} python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
           
     outputs:
-          new_version: ${{ steps.input_version.outputs.NEW_VERSION }}
+          version: ${{ steps.input_version.outputs.NEW_VERSION }}
 
   build:
     name: publish acr
