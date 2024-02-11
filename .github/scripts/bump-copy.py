@@ -32,11 +32,13 @@ def get_chart_version():
         print("mic")
         for line in file.readlines():
             print("something")
-            if line.startswith("version"):
+            if line.startswith('"version"'):
                 print("line detected")
                 version = line.split(":")[1].strip()
                 print(version)
                 return version
+
+    return("bummer")
                 
     raise Exception('Error with chart version')
 
