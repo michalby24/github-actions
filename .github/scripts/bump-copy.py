@@ -15,7 +15,7 @@ def get_chart_version():
                     #print("Extracted version:", version)
                     #print(version)
                     return version
-                else:
+                #else:
                     #print("Unexpected line format:", line.strip())
         #print("No line starting with 'version' found.")
     return None
