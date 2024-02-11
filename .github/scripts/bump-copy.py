@@ -38,7 +38,8 @@ def update_chart_version(new_version):
     subprocess.run(commands, shell=True)
 
 if __name__ == "__main__":
-    if(os.environ['VERSION']):
+    new_version =  os.environ['VERSION']
+    if(new_version):
         new_version = os.environ['VERSION']
     else:
         new_version = get_chart_version()
