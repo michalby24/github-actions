@@ -18,7 +18,7 @@ def get_chart_version():
                 else:
                     print("Unexpected line format:", line.strip())
         print("No line starting with 'version' found.")
-        return None
+    return None
 
                 
     raise Exception('Error with chart version')
