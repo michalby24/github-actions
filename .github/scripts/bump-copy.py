@@ -11,7 +11,7 @@ def get_chart_version():
                 parts = line.split(":")
                 if len(parts) >= 2:
                     #print(parts[1])
-                    version = parts[1].strip('"').strip('"')
+                    version = parts[1]
                     #print("Extracted version:", version)
                     #print(version)
                     return version
@@ -47,7 +47,7 @@ if __name__ == "__main__":
    # new_version=get_chart_version()
     michs = get_chart_version()
     # print(michs.strip('"'))
-    update_chart_version(michs[1:-1])
+    update_chart_version(michs)
     #update_chart_version("2.8.2")
     #print(f"Bumped version to {new_version}")
     #print(f"::set-output name=NEW_VERSION::{new_version}")
