@@ -25,7 +25,7 @@ import subprocess
 
 
 def get_chart_version():
-    path = 'package.json'
+    path = './package.json'
     #chart_path = os.path.join("helm", "Chart.yaml")
 
     with open(path, "r") as file:
