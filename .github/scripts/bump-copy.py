@@ -46,6 +46,7 @@ if __name__ == "__main__":
     #     update_chart_version(get_chart_version())
    # new_version=get_chart_version()
     michs = get_chart_version()
+    print(michs)
     update_chart_version(michs.strip('"'))
     update_chart_version("2.8.2")
     #print(f"Bumped version to {new_version}")
