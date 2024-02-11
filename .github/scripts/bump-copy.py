@@ -7,17 +7,17 @@ def get_chart_version():
     with open(path, "r") as file:
         for line in file:
             if '"version"' in line:
-                print("Line detected:", line.strip())
+                #print("Line detected:", line.strip())
                 parts = line.split(":")
                 if len(parts) >= 2:
-                    print(parts[1])
+                    #print(parts[1])
                     version = parts[1].strip('"').strip('"')
-                    print("Extracted version:", version)
-                    print(version)
+                    #print("Extracted version:", version)
+                    #print(version)
                     return version
                 else:
-                    print("Unexpected line format:", line.strip())
-        print("No line starting with 'version' found.")
+                    #print("Unexpected line format:", line.strip())
+        #print("No line starting with 'version' found.")
     return None
 
                 
@@ -45,7 +45,8 @@ if __name__ == "__main__":
     # else:
     #     update_chart_version(get_chart_version())
    # new_version=get_chart_version()
-    update_chart_version(get_chart_version())
+    michs = get_chart_version()
+    update_chart_version(michs)
 
     #print(f"Bumped version to {new_version}")
     #print(f"::set-output name=NEW_VERSION::{new_version}")
