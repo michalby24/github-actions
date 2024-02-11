@@ -37,7 +37,7 @@ def update_chart_version(new_version):
 
 if __name__ == "__main__":
     new_version = os.environ['VERSION']
-    if(!new_version):
+    if(new_version = ''):
         new_version = get_chart_version()
         
     update_chart_version(new_version)
