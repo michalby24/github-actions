@@ -1,6 +1,6 @@
 {
     "name": "service-name",
-    "version": "5.6.7",
+    "version": "4.5.6",
     "description": "This is template for map colonies typescript service",
     "main": "./src/index.ts",
     "scripts": {

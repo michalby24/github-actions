@@ -1,4 +1,4 @@
-name: "hey"
+name: Match chart version and push to ACR
 
 on:
   push:
@@ -21,36 +21,34 @@ jobs:
   chart-update:
     runs-on: ubuntu-latest
     steps:         
-      - uses: actions/checkout@v2
-        name: checkout repo
+      - name: checkout repo
+        uses: actions/checkout@v2
 
       - name: Run Match Version Script
-        id: input_version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=${{ inputs.version }} python .github/scripts/bump-copy.py ${{ secrets.GITHUB_TOKEN }} 
       
-      - name: get sha
+      - name: get sha for latest commit
         id: sha
         run: |
           sha_new=$(git rev-parse HEAD)
-          echo $sha_new
           echo "::set-output name=SHA::$sha_new"
       
-      - run:
-            echo ${{ steps.sha.outputs.SHA }}
+      # - run:
+      #       echo ${{ steps.sha.outputs.SHA }}
     outputs:
           sha: ${{ steps.sha.outputs.SHA}}
 
   build:
     name: publish acr
     runs-on: ubuntu-latest
-    environment: prod
+#    environment: prod
     needs: chart-update
     steps:    
-      - uses: actions/checkout@v2
-        name: checkout repo
+      - name: checkout repo from latest commit
+        uses: actions/checkout@v2
         with:
           ref: ${{ needs.chart-update.outputs.sha }}
 
@@ -64,14 +62,12 @@ jobs:
           helm registry login ${{ secrets.ACR_URL }} --username ${{ secrets.ACR_PUSH_USER }} --password ${{ secrets.ACR_PUSH_TOKEN }} 
 
       - name: Get Chart name
-        id: get_chart
         run: |
           export "CHART=$(cat Chart.yaml | grep name | awk '{print $2; exit}')"
           echo "CHART=$CHART" >> $GITHUB_ENV
         working-directory: ./helm
 
-      - name: Get version name
-        id: get_version
+      - name: Get version 
         run: |
           export "VER=$(cat Chart.yaml | grep version | awk '{print $2; exit}')"
           echo "VER=$VER" >> $GITHUB_ENV
