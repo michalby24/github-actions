@@ -45,8 +45,8 @@ def update_chart_version(new_version):
     print(new_version)
     chart_path = os.path.join("helm", "Chart.yaml")
     commands = f"""
-        sed -i 's/^version:.*/version: {new_version}/' {chart_path};
-        sed -i 's/^appVersion:.*/appVersion: {new_version}/' {chart_path};
+        sed -i 's/^version:.*/version: v{new_version}/' {chart_path};
+        sed -i 's/^appVersion:.*/appVersion: v{new_version}/' {chart_path};
         git config --global user.email 'github-actions@github.com';
         git config --global user.name 'GitHub Actions';
         git add {chart_path};
