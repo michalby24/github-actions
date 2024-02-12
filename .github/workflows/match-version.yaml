@@ -50,7 +50,7 @@ jobs:
       - uses: actions/checkout@v2
         name: checkout repo
         with:
-          ref: ${{ needs.chart-update.outputs.sha_new }}
+          ref: ${{ needs.chart-update.outputs.SHA }}
 
       - name: install helm
         uses: Azure/setup-helm@v1
