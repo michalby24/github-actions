@@ -35,16 +35,13 @@ jobs:
         run: |
           sha_new=$(git rev-parse HEAD)
           echo "::set-output name=SHA::$sha_new"
-      
-      # - run:
-      #       echo ${{ steps.sha.outputs.SHA }}
+    
     outputs:
           sha: ${{ steps.sha.outputs.SHA}}
 
   build:
     name: publish acr
     runs-on: ubuntu-latest
-#    environment: prod
     needs: chart-update
     steps:    
       - name: checkout repo from latest commit
@@ -73,7 +70,6 @@ jobs:
           echo "VER=$VER" >> $GITHUB_ENV
         working-directory: ./helm
 
-
       - name: save helm chart to local registry
         run: |
           helm chart save . '${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VER }}'
@@ -83,3 +79,4 @@ jobs:
         run: |
           helm chart push ${{ secrets.ACR_URL }}/helm/${{ env.CHART }}:${{ env.VER }}
         working-directory: ./helm
+        

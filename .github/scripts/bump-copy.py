@@ -41,5 +41,4 @@ if __name__ == "__main__":
 
     update_chart_version(new_version)
     print(f"Bumped version to {new_version}")
-#    print(f"::set-output name=NEW_VERSION::{new_version}")
 
