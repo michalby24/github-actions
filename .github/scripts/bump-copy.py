@@ -57,16 +57,20 @@ def update_chart_version(new_version):
     subprocess.run(commands, shell=True)
 
 if __name__ == "__main__":
-    # new_version =  os.environ['VERSION']
-    # if(new_version):
+    new_version =  os.environ['VERSION']
+    
+    if(new_version == ''):
     #     update_chart_version(new_version)
     # else:
-    #     update_chart_version(get_chart_version())
-   # new_version=get_chart_version()
-    michs = get_chart_version()
+        # update_chart_version(get_chart_version())
+        new_version=get_chart_version()
+    
+    
+    # michs = get_chart_version()
     # print(michs.strip('"'))
-    update_chart_version(michs)
-    #update_chart_version("2.8.2")
-    #print(f"Bumped version to {new_version}")
-    #print(f"::set-output name=NEW_VERSION::{new_version}")
+    # update_chart_version(michs)
+    # update_chart_version("2.8.2")
+    update_chart_version(new_version)
+    print(f"Bumped version to {new_version}")
+    print(f"::set-output name=NEW_VERSION::{new_version}")
 
