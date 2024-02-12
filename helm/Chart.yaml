@@ -1,7 +1,7 @@
 apiVersion: v2
 name: michal-test-chart
 description: A Helm chart for Kubernetes
-version: 5.4.2000
+version: 5.6.7
 dependencies:
   - name: prometheus
     version: 23.3.0
@@ -15,4 +15,4 @@ dependencies:
     version: 4.8.0
     repository: https://prometheus-community.github.io/helm-charts
     condition: prometheus-postgres-exporter.enabled
-appVersion: 5.4.2000
+appVersion: 5.6.7
