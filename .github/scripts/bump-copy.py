@@ -1,6 +1,5 @@
 import os
 import subprocess
-
 import json
 
 def get_chart_version():
@@ -17,7 +16,7 @@ def get_chart_version():
             print("No 'version' key found in package.json.")
             return None
 
-    raise Exception('Error with chart version')
+    raise Exception('Error with package version')
 
 def update_chart_version(new_version):
     print(new_version)
