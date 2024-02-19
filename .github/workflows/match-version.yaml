@@ -4,12 +4,13 @@ on:
   push:
      branches:
       - master
-
   workflow_dispatch:
     inputs:
       version:
         required: false
         type: string
+  repository_dispatch:
+    types: ['michsi']
 env:
   HELM_EXPERIMENTAL_OCI: 1
 
