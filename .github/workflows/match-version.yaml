@@ -10,7 +10,8 @@ on:
         required: false
         type: string
   repository_dispatch:
-    types: ['michsi']
+    types: [trigger-workflow]
+    
 env:
   HELM_EXPERIMENTAL_OCI: 1
 
