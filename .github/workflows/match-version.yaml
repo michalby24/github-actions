@@ -9,8 +9,8 @@ on:
       version:
         required: false
         type: string
-  repository_dispatch:
-    types: [trigger-workflow]
+  workflow_call:
+
     
 env:
   HELM_EXPERIMENTAL_OCI: 1
